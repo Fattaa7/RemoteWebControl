@@ -89,7 +89,7 @@ def play_current_audio(index):
         p.set_mrl(url)
         p.play()
         str1 = object_keys[index][:16]
-        str2 = object_keys[index][:16]
+        str2 = object_keys[index][16:]
         lcdDisplay.lcd_display_string(str1,1)
         lcdDisplay.lcd_display_string(str2,2)
 
