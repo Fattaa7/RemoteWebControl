@@ -123,13 +123,10 @@ while True:
     if pressed_key is not None:
         print("Pressed key:", pressed_key)
         if pressed_key == '-':
-            lcdDisplay.lcd_clear()
             previous_audio()
         if pressed_key == '+':
-            lcdDisplay.lcd_clear()
             next_audio()
         if pressed_key == '0':
-            lcdDisplay.lcd_clear()
             pause_audio()
     time.sleep(0.3)  # Delay between scans
 
