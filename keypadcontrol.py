@@ -88,7 +88,10 @@ def play_current_audio(index):
         url = s3.generate_presigned_url('get_object', Params={'Bucket': aws_s3_bucket, 'Key': object_keys[index]})
         p.set_mrl(url)
         p.play()
-        lcdDisplay.lcd_display_string(object_keys[index],1)
+        str1 = object_keys[index][:16]
+        str2 = object_keys[index][:16]
+        lcdDisplay.lcd_display_string(str1,1)
+        lcdDisplay.lcd_display_string(str2,2)
 
 # Play the initial audio
 #play_current_audio(current_audio_index)
