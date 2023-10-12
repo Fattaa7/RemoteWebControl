@@ -4,7 +4,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-driver = webdriver.Firefox()
+service =  Service(executable_path=r"C:\Users\ahmed\Desktop\Plyaer\pyt\geckodriver.exe")
+
+driver = webdriver.Firefox(service=service)
 #driver.get('https://accounts.spotify.com/en/login?continue=https%3A%2F%2Fopen.spotify.com%2F/')
 driver.get('http://52.54.176.49:8080/')
     
