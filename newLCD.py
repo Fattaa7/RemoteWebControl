@@ -67,6 +67,7 @@ def calculate(txt):
     print(txt2)
     for x in nums:
         sum += x
+    print(sum)
     return sum
 
 # Main loop
@@ -81,12 +82,12 @@ try:
             if pressed_key == 'F1':
                 lcdDisplay.lcd_clear()
                 input_text = ""
-                if pressed_key == '=':
-                    lcdDisplay.lcd_clear()
-                    input_text =  str(calculate(input_text))
-                    lcdDisplay.lcd_display_string(input_text,1)
-                else:
-                    lcdDisplay.lcd_display_string(input_text,1)
+            if pressed_key == '=':
+                lcdDisplay.lcd_clear()
+                input_text =  str(calculate(input_text))
+                lcdDisplay.lcd_display_string(input_text,1)
+            else:
+                lcdDisplay.lcd_display_string(input_text,1)
             time.sleep(0.3)  # Delay between scans
 except KeyboardInterrupt:
     pass
