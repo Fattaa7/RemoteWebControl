@@ -3,6 +3,7 @@ import vlc
 import RPi.GPIO as GPIO
 import time
 import drivers
+import threading
 from time import sleep, strftime
 
 
@@ -79,6 +80,7 @@ object_keys = [obj['Key'] for obj in response.get('Contents', [])]
 # Initialize VLC media player
 p = vlc.MediaPlayer()
 current_audio_index = 0
+audio_thread = None
 
 # Function to play the current audio
 def play_current_audio(index):
@@ -89,7 +91,14 @@ def play_current_audio(index):
         lcdDisplay.lcd_display_string(object_keys[index],1)
 
 # Play the initial audio
-play_current_audio(current_audio_index)
+#play_current_audio(current_audio_index)
+
+def audio_thread_function():
+    play_current_audio(current_audio_index)
+
+audio_thread = threading.Thread(target=audio_thread_function)
+audio_thread.daemon = True
+audio_thread.start()
 
 
 # Function to play the previous audio
