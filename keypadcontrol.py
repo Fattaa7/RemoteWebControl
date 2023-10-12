@@ -9,7 +9,9 @@ from time import sleep, strftime
 
 
 # Define the GPIO pins for the keypad rows and columns
-rows = [19, 26, 16, 20, 12]  # GPIO 19, 26, 16, 20
+#rows = [19, 26, 16, 20, 12]  # GPIO 19, 26, 16, 20
+rows = [19]  # GPIO 19, 26, 16, 20
+
 cols = [21, 13, 6, 5]  # GPIO 21, 13, 6, 5, 12
 cursor = 0
 input_text = ""
