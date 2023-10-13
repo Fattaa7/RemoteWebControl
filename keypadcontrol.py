@@ -69,6 +69,7 @@ lcdDisplay = drivers.Lcd()
 lcdDisplay.lcd_clear()
 lcdDisplay.lcd_display_string("starting",1)
 
+audioFuncs.play_current_audio(serverSetup.current_audio_index)
 
 while True:
     pressed_key = read_keypad()
