@@ -5,7 +5,7 @@ import time
 import drivers
 import threading
 from time import sleep, strftime
-import serverSetup
+#import serverSetup
 import audioFuncs
 
 
@@ -17,7 +17,6 @@ cols = [21, 13, 6, 5]  # GPIO 21, 13, 6, 5, 12
 cursor = 0
 input_text = ""
 
-serverSetup.init()
 
 
 # Define the keypad matrix
@@ -65,7 +64,9 @@ def read_keypad():
         GPIO.output(row, GPIO.HIGH)
     return key
 
-audioFuncs.play_current_audio(serverSetup.current_audio_index)
+audioFuncs.audio_thread_function()
+
+print("reached 69")
 
 while True:
     pressed_key = read_keypad()
