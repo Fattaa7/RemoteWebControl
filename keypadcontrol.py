@@ -8,21 +8,6 @@ from time import sleep, strftime
 import audioFuncs
 import padkeydriver
 import urllib
-import socket
-
-def get_ip_address():
-    try:  
-        # Get the hostname
-        host_name = socket.gethostname()
-        # Get the IP address corresponding to the hostname
-        ip_address = socket.gethostbyname(host_name)
-        return ip_address
-    except Exception as e:
-        audioFuncs.lcdDisplay.lcd_display_string("No IP found", 1)
-        return "Not Found"
-
-# Call the function
-ip_address = get_ip_address()
 
 
 def mainLoop():

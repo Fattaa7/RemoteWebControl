@@ -16,7 +16,7 @@ response = s3.list_objects_v2(Bucket=aws_s3_bucket)
 # Create a list to store object keys
 object_keys = [obj['Key'] for obj in response.get('Contents', [])]
 
-#random.shuffle(object_keys)  # for future use
+random.shuffle(object_keys)  # for future use
 
 print(len(object_keys))
 
