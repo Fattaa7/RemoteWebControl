@@ -75,7 +75,7 @@ while True:
         if pressed_key == '+':
             audioFuncs.next_audio()
         if pressed_key == '0':
-            audio.pause_audio()
+            audioFuncs.pause_audio()
     time.sleep(0.3)  # Delay between scans
 
 
