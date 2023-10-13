@@ -5,7 +5,7 @@ import time
 import drivers
 import threading
 from time import sleep, strftime
-
+import audioFuncs
 
 
 # Define the GPIO pins for the keypad rows and columns
@@ -59,86 +59,18 @@ def read_keypad():
         GPIO.output(row, GPIO.HIGH)
     return key
 
-lcdDisplay = drivers.Lcd()
-lcdDisplay.lcd_clear()
+audioFuncs.audio_thread_function()
 
-
-# AWS S3 Configuration
-aws_access_key_id = "AKIASTCUAEMDIYODMZG4"
-aws_secret_access_key = "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"
-aws_s3_bucket = "late-start"
-
-# Initialize S3 client
-s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
-
-# List objects in the S3 bucket
-response = s3.list_objects_v2(Bucket=aws_s3_bucket)
-
-# Create a list to store object keys
-object_keys = [obj['Key'] for obj in response.get('Contents', [])]
-
-# Initialize VLC media player
-p = vlc.MediaPlayer()
-current_audio_index = 0
-audio_thread = None
-
-# Function to play the current audio
-def play_current_audio(index):
-    if 0 <= index < len(object_keys):
-        url = s3.generate_presigned_url('get_object', Params={'Bucket': aws_s3_bucket, 'Key': object_keys[index]})
-        p.set_mrl(url)
-        p.play()
-        lcdDisplay.lcd_clear()
-        str = object_keys[index][:-4]
-        str1 = str[:16]
-        lcdDisplay.lcd_display_string(str1,1)
-        str2 = str[16:]
-        if len(str2) > 1:
-            lcdDisplay.lcd_display_string(str2,2)
-
-# Play the initial audio
-#play_current_audio(current_audio_index)
-
-def audio_thread_function():
-    play_current_audio(current_audio_index)
-
-
-# Function to play the previous audio
-def previous_audio():
-    global current_audio_index
-    if current_audio_index > 0:
-        current_audio_index -= 1
-        p.stop()
-        play_current_audio(current_audio_index)
-
-# Function to play the next audio
-def next_audio():
-    global current_audio_index
-    if current_audio_index < len(object_keys) - 1:
-        current_audio_index += 1
-        p.stop()
-        play_current_audio(current_audio_index)
-
-# Function to pause or resume playback
-def pause_audio():
-    if p.is_playing() == 1:
-        p.pause()
-        print("Paused")
-    else:
-        p.play()
-        print("Resumed")
-
-play_current_audio()
+print("reached 69")
 
 while True:
     pressed_key = read_keypad()
     if pressed_key is not None:
         print("Pressed key:", pressed_key)
-        if pressed_key == '-':
-            previous_audio()
-        if pressed_key == '+':
-            next_audio()
-        if pressed_key == '0':
-            pause_audio()
+        if pressed_key == '9':
+            audioFuncs.previous_audio()
+        if pressed_key == '3':
+            audioFuncs.next_audio()
+        if pressed_key == '6':
+            audioFuncs.pause_audio()
     time.sleep(0.3)  # Delay between scans
-
