@@ -5,6 +5,8 @@ import threading
 import serverSetup
 import drivers
 
+lcdDisplay = drivers.Lcd()
+lcdDisplay.lcd_clear()
 
 
 def audio_thread_function():
