@@ -5,8 +5,8 @@ import time
 import drivers
 import threading
 from time import sleep, strftime
-import audioFuncs
 import serverSetup
+import audioFuncs
 
 
 # Define the GPIO pins for the keypad rows and columns
