@@ -18,6 +18,7 @@ def play_current_audio(index):
         serverSetup.p.play()
         lcdDisplay.lcd_clear()
         str = serverSetup.object_keys[index][:-4]
+        print(str)
         str1 = str[:16]
         lcdDisplay.lcd_display_string(str1,1)
         str2 = str[16:]
