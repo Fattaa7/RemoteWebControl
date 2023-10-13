@@ -61,8 +61,6 @@ def read_keypad():
 
 audioFuncs.audio_thread_function()
 
-print("reached 69")
-
 while True:
     pressed_key = read_keypad()
     if pressed_key is not None:
@@ -73,4 +71,10 @@ while True:
             audioFuncs.next_audio()
         if pressed_key == '6':
             audioFuncs.pause_audio()
+        if pressed_key == '+':
+            audioFuncs.forward()
+        if pressed_key == '-':
+            audioFuncs.backward()
+    
+    
     time.sleep(0.3)  # Delay between scans
