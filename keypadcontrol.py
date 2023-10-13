@@ -73,7 +73,7 @@ while True:
             audioFuncs.pause_audio()
         if pressed_key == '+':
             audioFuncs.forward()
-        if pressed_key == '-':
+        if pressed_key == '=':
             audioFuncs.backward()
     
     
