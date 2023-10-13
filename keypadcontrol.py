@@ -64,7 +64,11 @@ def read_keypad():
         GPIO.output(row, GPIO.HIGH)
     return key
 
-audioFuncs.audio_thread_function()
+
+audio_thread = threading.Thread(target=audioFuncs.audio_thread_function)
+audio_thread.daemon = True
+audio_thread.start()
+
 
 print("reached 69")
 
