@@ -17,6 +17,9 @@ cols = [21, 13, 6, 5]  # GPIO 21, 13, 6, 5, 12
 cursor = 0
 input_text = ""
 
+serverSetup.init()
+
+
 # Define the keypad matrix
 
 keys = [

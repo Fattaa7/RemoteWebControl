@@ -3,6 +3,9 @@ import vlc
 import time
 import threading
 import serverSetup
+import drivers
+
+
 
 def audio_thread_function():
     play_current_audio(serverSetup.current_audio_index)
@@ -13,10 +16,14 @@ def play_current_audio(index):
         url = serverSetup.s3.generate_presigned_url('get_object', Params={'Bucket': serverSetup.aws_s3_bucket, 'Key': serverSetup.object_keys[index]})
         serverSetup.p.set_mrl(url)
         serverSetup.p.play()
-        str = serverSetup.object_keys[index][:16]
-        str2 = serverSetup.object_keys[index][16:]
-        print(str)
-        print(str2)
+        lcdDisplay.lcd_clear()
+        str = serverSetup.object_keys[index][:-4]
+        str1 = str[:16]
+        lcdDisplay.lcd_display_string(str1,1)
+        str2 = str[16:]
+        if len(str2) > 1:
+            lcdDisplay.lcd_display_string(str2,2)
+
 
 
 def previous_audio():
