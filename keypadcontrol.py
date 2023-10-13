@@ -7,6 +7,7 @@ import threading
 from time import sleep, strftime
 import audioFuncs
 import padkeydriver
+import urllib
 
 def mainLoop():
     pressed_key = padkeydriver.read_keypad()
@@ -24,6 +25,16 @@ def mainLoop():
             audioFuncs.backward()
     threading.Timer(0.3, mainLoop).start()
 
+try:
+    url = "https://www.google.com"
+    urllib.urlopen(url)
+    status = "Connected"
+except:
+    status = "Not connected"
+print (status)
+if status == "Connected":
+    while True:
+        audioFuncs.lcdDisplay.lcd_display_string("working ya bro",1)
     
 
 

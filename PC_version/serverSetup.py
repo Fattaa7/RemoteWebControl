@@ -3,7 +3,7 @@ import vlc
 import time
 import keyboard
 import threading
-
+import random
 
 # AWS S3 Configuration
 aws_access_key_id = "AKIASTCUAEMDIYODMZG4"
@@ -18,6 +18,7 @@ response = s3.list_objects_v2(Bucket=aws_s3_bucket)
 
 # Create a list to store object keys
 object_keys = [obj['Key'] for obj in response.get('Contents', [])]
+random.shuffle(object_keys)
 print(len(object_keys))
 
 # Initialize VLC media player
