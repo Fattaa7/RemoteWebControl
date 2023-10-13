@@ -61,7 +61,10 @@ def read_keypad():
 
 audioFuncs.audio_thread_function()
 
+audioFuncs.autoNext()
+
 while True:
+    
     pressed_key = read_keypad()
     if pressed_key is not None:
         print("Pressed key:", pressed_key)

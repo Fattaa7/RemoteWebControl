@@ -70,8 +70,10 @@ def backward():
     serverSetup.p.set_position(serverSetup.p.get_position() - 0.03)
 
 def autoNext():
-    time.sleep(1)
     if not serverSetup.p.is_playing():
         if serverSetup.p.get_position() > 0.98:
             next_audio()
+    threading.Timer(1, autoNext).start()
+        
+    
 
