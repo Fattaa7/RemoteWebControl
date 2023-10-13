@@ -1,7 +1,6 @@
 import boto3
 import vlc
 import time
-import keyboard
 import threading
 import serverSetup
 

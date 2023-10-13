@@ -1,8 +1,6 @@
 import boto3
 import vlc
 import time
-import keyboard
-import threading
 
 
 # AWS S3 Configuration
