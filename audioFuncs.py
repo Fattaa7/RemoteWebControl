@@ -1,30 +1,7 @@
-import boto3
-import vlc
-import time
 import threading
 import serverSetup
-import drivers
+import lcd
 from time import sleep
-
-def long_string(display, text='', num_line=1, num_cols=16):
-		""" 
-		Parameters: (driver, string to print, number of line to print, number of columns of your display)
-		Return: This function send to display your scrolling string.
-		"""
-		if len(text) > num_cols:
-			display.lcd_display_string(text[:num_cols], num_line)
-			sleep(1)
-			for i in range(len(text) - num_cols + 1):
-				text_to_print = text[i:i+num_cols]
-				display.lcd_display_string(text_to_print, num_line)
-				sleep(0.2)
-			sleep(1)
-		else:
-			display.lcd_display_string(text, num_line)
-
-
-lcdDisplay = drivers.Lcd()
-lcdDisplay.lcd_clear()
 
 
 def audio_thread_function():
@@ -36,14 +13,14 @@ def play_current_audio(index):
         url = serverSetup.s3.generate_presigned_url('get_object', Params={'Bucket': serverSetup.aws_s3_bucket, 'Key': serverSetup.object_keys[index]})
         serverSetup.p.set_mrl(url)
         serverSetup.p.play()
-        lcdDisplay.lcd_clear()
+        lcd.lcd.lcdDisplay.lcd_clear()
         str = serverSetup.object_keys[index][:-4]
         print(str)
         str1 = str[:16]
-        lcdDisplay.lcd_display_string(str1,1)
+        lcd.lcdDisplay.lcd_display_string(str1,1)
         str2 = str[16:]
         if len(str2) > 1:
-            long_string(lcdDisplay,str2,2)
+            lcd.long_string(lcd.lcdDisplay,str2,2)
 
 
 

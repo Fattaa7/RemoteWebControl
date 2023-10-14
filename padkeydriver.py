@@ -1,11 +1,6 @@
-import boto3
-import vlc
 import RPi.GPIO as GPIO
 import time
-import drivers
-import threading
 from time import sleep, strftime
-import audioFuncs
 
 # Define the GPIO pins for the keypad rows and columns
 rows = [19, 26, 16, 20, 12]  # GPIO 19, 26, 16, 20

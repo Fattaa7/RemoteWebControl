@@ -1,13 +1,7 @@
-import boto3
-import vlc
 import RPi.GPIO as GPIO
-import time
-import drivers
 import threading
-from time import sleep, strftime
 import audioFuncs
 import padkeydriver
-import urllib
 
 
 def mainLoop():
