@@ -1,8 +1,20 @@
 import drivers
+from drivers import i2c_dev
 from time import sleep
+
+ 
+def setBacklight(back):
+    if back == 1:
+        i2c_dev.LCD_BACKLIGHT = 0x08
+    elif back == 0:
+        i2c_dev.LCD_BACKLIGHT = 0x00
+
+
 
 lcdDisplay = drivers.Lcd()
 lcdDisplay.lcd_clear()
+setBacklight(0)
+ 
 def long_string(display, text='', num_line=1, num_cols=16):
 		""" 
 		Parameters: (driver, string to print, number of line to print, number of columns of your display)
