@@ -23,12 +23,7 @@ def swapBacklight():
     elif i2c_dev.LCD_BACKLIGHT == 0:
         i2c_dev.LCD_BACKLIGHT = 0x08
 
-def loopawy():
-    swapBacklight()
-    threading.Timer(1,loopawy).start()
     
-
-#loopawy()
  
 def long_string(display, text='', num_line=1, num_cols=16):
 		""" 
