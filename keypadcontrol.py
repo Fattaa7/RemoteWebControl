@@ -8,16 +8,21 @@ def mainLoop():
     pressed_key = padkeydriver.read_keypad()
     if pressed_key is not None:
         print("Pressed key:", pressed_key)
-        if pressed_key == '9':
+        if pressed_key == padkeydriver.PREVIOUS:
             audioFuncs.previous_audio()
-        if pressed_key == '3':
+            
+        if pressed_key == padkeydriver.NEXT:
             audioFuncs.next_audio()
-        if pressed_key == '6':
+            
+        if pressed_key == padkeydriver.PAUSE_PLAY:
             audioFuncs.pause_audio()
-        if pressed_key == '+':
+            
+        if pressed_key == padkeydriver.FORWARD:
             audioFuncs.forward()
-        if pressed_key == '=':
+            
+        if pressed_key == padkeydriver.BACKWARD:
             audioFuncs.backward()
+            
     threading.Timer(0.3, mainLoop).start()
 
     

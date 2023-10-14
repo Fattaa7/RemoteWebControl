@@ -8,6 +8,13 @@ cols = [21, 13, 6, 5]  # GPIO 21, 13, 6, 5, 12
 cursor = 0
 input_text = ""
 # Define the keypad matrix
+
+PREVIOUS = '9'
+NEXT = '3'
+PAUSE_PLAY = '6'
+FORWARD = '+'
+BACKWARD = '='
+
 keys = [
     ['F1', 'F2', '=', '*'],
     ['1', '2', '3', 'Up'],
