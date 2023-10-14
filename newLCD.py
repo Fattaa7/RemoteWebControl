@@ -73,22 +73,23 @@ def calculate(txt):
 # Main loop
 
 try:
-    while True:
-        pressed_key = read_keypad()
-        if pressed_key is not None:
-            input_text += str(pressed_key)
-            print("Pressed key:", pressed_key)
-            lcdDisplay.lcd_display_string(input_text,1)
-            if pressed_key == 'F1':
-                lcdDisplay.lcd_clear()
-                input_text = ""
-            if pressed_key == '=':
-                lcdDisplay.lcd_clear()
-                input_text =  str(calculate(input_text))
-                lcdDisplay.lcd_display_string(input_text,1)
-            else:
-                lcdDisplay.lcd_display_string(input_text,1)
-            time.sleep(0.3)  # Delay between scans
+    lcdDisplay.lcd_backlight(0)
+    # while True:
+    #     pressed_key = read_keypad()
+    #     if pressed_key is not None:
+    #         input_text += str(pressed_key)
+    #         print("Pressed key:", pressed_key)
+    #         lcdDisplay.lcd_display_string(input_text,1)
+    #         if pressed_key == 'F1':
+    #             lcdDisplay.lcd_clear()
+    #             input_text = ""
+    #         if pressed_key == '=':
+    #             lcdDisplay.lcd_clear()
+    #             input_text =  str(calculate(input_text))
+    #             lcdDisplay.lcd_display_string(input_text,1)
+    #         else:
+    #             lcdDisplay.lcd_display_string(input_text,1)
+    #         time.sleep(0.3)  # Delay between scans
 except KeyboardInterrupt:
     pass
 
