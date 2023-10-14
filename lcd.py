@@ -3,7 +3,14 @@ from drivers import i2c_dev
 from time import sleep
 import threading
 
- 
+lcdDisplay = 0
+
+def init():
+    global lcdDisplay
+    lcdDisplay = drivers.Lcd()
+    lcdDisplay.lcd_clear()
+
+
 def setBacklight(back):
     if back == 1:
         i2c_dev.LCD_BACKLIGHT = 0x08
@@ -21,8 +28,6 @@ def loopawy():
     threading.Timer(1,loopawy).start()
     
 
-lcdDisplay = drivers.Lcd()
-lcdDisplay.lcd_clear()
 loopawy()
  
 def long_string(display, text='', num_line=1, num_cols=16):

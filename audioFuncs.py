@@ -5,6 +5,7 @@ from time import sleep
 
 
 def audio_thread_function():
+    lcd.init()
     play_current_audio(serverSetup.current_audio_index)
 
 # Function to play the current audio
