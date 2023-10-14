@@ -20,11 +20,11 @@ def setBacklight(back):
 def swapBacklight():
     if i2c_dev.LCD_BACKLIGHT == 0x08:
         i2c_dev.LCD_BACKLIGHT = 0x00
-        lcdDisplay.backlight(i2c_dev.LCD_BACKLIGHT)
+        lcdDisplay.lcd_backlight(1)
 
     elif i2c_dev.LCD_BACKLIGHT == 0:
         i2c_dev.LCD_BACKLIGHT = 0x08
-        lcdDisplay.backlight(i2c_dev.LCD_BACKLIGHT)
+        lcdDisplay.lcd_backlight(1)
 
 
     
