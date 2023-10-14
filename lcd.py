@@ -9,7 +9,7 @@ def init():
     global lcdDisplay
     lcdDisplay = drivers.Lcd()
     lcdDisplay.lcd_clear()
-
+    setBacklight(0)
 
 def setBacklight(back):
     if back == 1:
