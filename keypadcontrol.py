@@ -18,6 +18,7 @@ def mainLoop():
             audioFuncs.pause_audio()
             
         if pressed_key == padkeydriver.FORWARD:
+            lcd.swapBacklight()
             audioFuncs.forward()
             
         if pressed_key == padkeydriver.BACKWARD:

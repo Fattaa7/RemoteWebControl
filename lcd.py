@@ -9,6 +9,11 @@ def setBacklight(back):
     elif back == 0:
         i2c_dev.LCD_BACKLIGHT = 0x00
 
+def swapBacklight():
+    if i2c_dev.LCD_BACKLIGHT == 0x08:
+        i2c_dev.LCD_BACKLIGHT = 0x00
+    elif i2c_dev.LCD_BACKLIGHT == 0:
+        i2c_dev.LCD_BACKLIGHT = 0x08
 
 
 lcdDisplay = drivers.Lcd()
