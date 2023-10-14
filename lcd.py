@@ -14,19 +14,17 @@ def init():
 def setBacklight(back):
     if back == 1:
         i2c_dev.LCD_BACKLIGHT = 0x08
+        lcdDisplay.lcd_backlight(1)
     elif back == 0:
         i2c_dev.LCD_BACKLIGHT = 0x00
+        lcdDisplay.lcd_backlight(1)
 
 def swapBacklight():
     if i2c_dev.LCD_BACKLIGHT == 0x08:
-        i2c_dev.LCD_BACKLIGHT = 0x00
-        lcdDisplay.lcd_backlight(1)
+        setBacklight(0)
 
     elif i2c_dev.LCD_BACKLIGHT == 0:
-        i2c_dev.LCD_BACKLIGHT = 0x08
-        lcdDisplay.lcd_backlight(1)
-
-
+        setBacklight(1)
     
  
 def long_string(display, text='', num_line=1, num_cols=16):
