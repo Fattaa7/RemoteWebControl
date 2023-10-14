@@ -5,7 +5,6 @@ import padkeydriver
 import lcd
 
 def mainLoop():
-    lcd.lcdDisplay.lcd_backlight(0)
     pressed_key = padkeydriver.read_keypad()
     if pressed_key is not None:
         print("Pressed key:", pressed_key)

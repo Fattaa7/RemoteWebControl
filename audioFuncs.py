@@ -14,7 +14,6 @@ def play_current_audio(index):
         serverSetup.p.set_mrl(url)
         serverSetup.p.play()
         lcd.lcdDisplay.lcd_clear()
-        lcd.lcdDisplay.lcd_backlight(0)
         str = serverSetup.object_keys[index][:-4]
         print(str)
         str1 = str[:16]
