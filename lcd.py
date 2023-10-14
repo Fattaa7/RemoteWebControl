@@ -3,7 +3,7 @@ from time import sleep
 
 lcdDisplay = drivers.Lcd()
 lcdDisplay.lcd_clear()
-
+lcdDisplay.lcd_backlight(0)
 def long_string(display, text='', num_line=1, num_cols=16):
 		""" 
 		Parameters: (driver, string to print, number of line to print, number of columns of your display)
