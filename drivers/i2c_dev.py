@@ -109,6 +109,7 @@ class Lcd:
         self.lcd_write(LCD_DISPLAYCONTROL | LCD_DISPLAYON)
         self.lcd_write(LCD_CLEARDISPLAY)
         self.lcd_write(LCD_ENTRYMODESET | LCD_ENTRYLEFT)
+        self.lcd.write_cmd(LCD_NOBACKLIGHT)
         sleep(0.2)
 
     # clocks EN to latch command
