@@ -20,8 +20,9 @@ def play_current_audio(index):
         str1 = str[:16]
         lcd.lcdDisplay.lcd_display_string(str1,1)
         str2 = str[16:]
-        if len(str2) > 1:
-            lcd.long_string(lcd.lcdDisplay,str2,2)
+        lcd.loopawy()
+        #if len(str2) > 1:
+        #    lcd.long_string(lcd.lcdDisplay,str2,2)
 
 
 
