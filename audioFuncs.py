@@ -13,7 +13,7 @@ def play_current_audio(index):
         url = serverSetup.s3.generate_presigned_url('get_object', Params={'Bucket': serverSetup.aws_s3_bucket, 'Key': serverSetup.object_keys[index]})
         serverSetup.p.set_mrl(url)
         serverSetup.p.play()
-        lcd.lcd.lcdDisplay.lcd_clear()
+        lcd.lcdDisplay.lcd_clear()
         str = serverSetup.object_keys[index][:-4]
         print(str)
         str1 = str[:16]
