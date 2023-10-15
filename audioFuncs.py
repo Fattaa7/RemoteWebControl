@@ -1,9 +1,10 @@
 import threading
+import time
 import serverSetup
 import lcd
 from time import sleep
 
-
+is_playing = 0
 def audio_thread_function():
     lcd.init()
     play_current_audio(serverSetup.current_audio_index)
@@ -15,12 +16,12 @@ def play_current_audio(index):
         serverSetup.p.set_mrl(url)
         serverSetup.p.play()
         lcd.lcdDisplay.lcd_clear()
-        str = serverSetup.object_keys[index][:-4]
-        print(str)
-        str1 = str[:16]
-        lcd.lcdDisplay.lcd_display_string(str1,1)
-        str2 = str[16:]
-        lcd.swapBacklight()
+        str_value = serverSetup.object_keys[index][:-4]
+        print(str_value)
+        str1 = str_value[:16]
+        lcd.lcdDisplay.lcd_display_string(str1, 1)
+        str2 = str_value[16:]
+        #lcd.swapBacklight()
         if len(str2) > 1:
             lcd.long_string(lcd.lcdDisplay,str2,2)
 
