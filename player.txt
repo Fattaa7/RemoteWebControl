@@ -1,0 +1,18 @@
+[Unit]
+Description=playerApp
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python /home/pi/Desktop/web/RemoteWebControl/keypadcontrol.py
+Restart=always
+RestartSec=2
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=player
+User=pi
+Environment="XDG_RUNTIME_DIR=/run/user/1000"
+Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse/"
+
+
+[Install]
+WantedBy=multi-user.target
