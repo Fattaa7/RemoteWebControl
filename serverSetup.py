@@ -9,11 +9,20 @@ aws_secret_access_key = "6tBT9WRj0XFy4c+P9mlO3CU3BjfTziUXNhnftdEj"
 aws_s3_bucket = "late-start"
 folder_selected = "gustixa"
 object_keys = []
+folder_keys = []
 p = vlc.MediaPlayer()
 
 
 # Initialize S3 client
 s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
+def getFolders():
+    global folder_keys
+    response = s3.list_objects_v2(Bucket=aws_s3_bucket)
+    print("hellop")
+    folder_keys = [obj['Key'] for obj in response.get('Contents', []) if obj['Size'] == 0]
+    print("this is " + str(len(folder_keys)))
+
 
 def init():
     global object_keys

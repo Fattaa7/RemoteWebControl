@@ -6,8 +6,18 @@ from time import sleep
 
 is_playing = 0
 #select_folder = "liked"
-def audio_thread_function(select_folder):
+
+
+def init():
     lcd.init()
+    
+
+def modeInit():
+    serverSetup.getFolders()
+    display_folderName(serverSetup.folder_keys[0])
+
+
+def audio_thread_function(select_folder):
     serverSetup.folder_selected = select_folder
     serverSetup.init()
     play_current_audio(serverSetup.current_audio_index)
@@ -22,15 +32,8 @@ def play_current_audio(index):
         url = serverSetup.s3.generate_presigned_url('get_object', Params={'Bucket': serverSetup.aws_s3_bucket, 'Key': file_name})
         serverSetup.p.set_mrl(url)
         serverSetup.p.play()
-        lcd.lcdDisplay.lcd_clear()
-        str_value = file_name[len(folder_name) + 1:-4]  # Adjust the string to remove the folder prefix
-        print(str_value)
-        str1 = str_value[:16]
-        lcd.lcdDisplay.lcd_display_string(str1, 1)
-        str2 = str_value[16:]
-        #lcd.swapBacklight()
-        if len(str2) > 1:
-            lcd.long_string(lcd.lcdDisplay,str2,2)
+        display_SongName(file_name,folder_name)
+        
 
 
 
@@ -81,4 +84,30 @@ def autoNext():
     threading.Timer(1, autoNext).start()
         
     
+
+
+#display folder name without the '/' in the end of the name
+def display_folderName(filed_name):
+    lcd.lcdDisplay.lcd_clear()
+    file_name = filed_name[:-1]
+    #file_name = "Playlist: " + file_name
+    str1 = file_name[:16]
+    lcd.lcdDisplay.lcd_display_string("Playlist: ", 1)
+    lcd.lcdDisplay.lcd_display_string(str1, 2)
+    # str2 = file_name[16:]
+    # if len(str2) > 0:
+    #     lcd.long_string(lcd.lcdDisplay,str2,2)
+
+
+#display song name without the folder name in the beginning and without the ".mp3" in the end
+def display_SongName(file_name, folder_name):
+    lcd.lcdDisplay.lcd_clear()
+    str_value = file_name[len(folder_name) + 1:-4]  # Adjust the string to remove the folder prefix
+    print(str_value)
+    str1 = str_value[:16]
+    lcd.lcdDisplay.lcd_display_string(str1, 1)
+    str2 = str_value[16:]
+    #lcd.swapBacklight()
+    if len(str2) > 0:
+        lcd.long_string(lcd.lcdDisplay,str2,2)
 
