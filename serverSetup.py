@@ -7,7 +7,7 @@ import random
 aws_access_key_id = "AKIASTCUAEMDIYODMZG4"
 aws_secret_access_key = "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"
 aws_s3_bucket = "late-start"
-folder_selected = "gustixa"
+folder_selected = ""
 object_keys = []
 folder_keys = []
 p = vlc.MediaPlayer()

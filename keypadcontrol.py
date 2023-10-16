@@ -8,10 +8,14 @@ from subprocess import check_output
 import serverSetup
 import time
 
+MODE_MODE = 0
+AUDIO_MODE = 5
+
 folder_index = 0
 IP = check_output(["hostname", "-I"], encoding="utf8").split()[0]
 
 flag = 0
+#main_timer : threading.Timer
 
 BUTTON_GPIO = 17
 TOGGLE_GPIO = 27
@@ -25,13 +29,24 @@ GPIO.add_event_detect(BUTTON_GPIO, GPIO.FALLING, callback=button_pressed_callbac
 
 GPIO.setup(TOGGLE_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-def mode():
+def DevMode():
     print("Buttooon!")
     lcd.init()
     lcd.lcdDisplay.lcd_display_string("IP Address is:",1)
     lcd.lcdDisplay.lcd_display_string("" + str(IP),2)
     while True:
         continue
+
+def looping_on_mode():
+    #serverSetup.getFolders()
+    audioFuncs.modeInit()
+    audioFuncs.audio_stop()
+    while flag != AUDIO_MODE:
+        modeLoop()
+        time.sleep(0.3)
+    audioFuncs.audio_start(serverSetup.folder_keys[folder_index][:-1])
+    #mainLoop()
+
 
 def Toggle_swtich():
         if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
@@ -40,23 +55,16 @@ def Toggle_swtich():
             lcd.setBacklight(1)
         threading.Timer(0.3,Toggle_swtich).start()
 
-def display_element(filed_name):
-    lcd.lcdDisplay.lcd_clear()
-    file_name = filed_name
-    str1 = file_name[:16]
-    lcd.lcdDisplay.lcd_display_string(str1, 1)
-    str2 = file_name[16:]
-    if len(str2) > 1:
-        lcd.long_string(lcd.lcdDisplay,str2,2)
-
 def init():
     serverSetup.getFolders()
     lcd.init()
-    display_element(serverSetup.folder_keys[0][:-1])
+    audioFuncs.display_folderName(serverSetup.folder_keys[0])
     
 
 
 def mainLoop():
+    global flag
+    global main_timer
     pressed_key = padkeydriver.read_keypad()
     if pressed_key is not None:
         print("Pressed key:", pressed_key)
@@ -64,6 +72,9 @@ def mainLoop():
             audioFuncs.previous_audio()
             
         if pressed_key == padkeydriver.NEXT:
+            flag = 0
+            return
+            #looping_on_mode()
             audioFuncs.next_audio()
             
         if pressed_key == padkeydriver.PAUSE_PLAY:
@@ -75,9 +86,11 @@ def mainLoop():
             
         if pressed_key == padkeydriver.BACKWARD:
             audioFuncs.backward()
-            audioFuncs.audio_thread_function("gustixa")
-            
-    threading.Timer(0.3, mainLoop).start()
+            #audioFuncs.audio_thread_function("gustixa")
+    
+    # if flag == 5:    
+    #         main_timer = threading.Timer(0.3, mainLoop)
+    #         main_timer.start()
 
 def modeLoop():
     pressed_key = padkeydriver.read_keypad()
@@ -102,32 +115,18 @@ def modeLoop():
                 audioFuncs.display_folderName(serverSetup.folder_keys[folder_index])
 
         if pressed_key == padkeydriver.PAUSE_PLAY:
-            flag = 5
+            flag = AUDIO_MODE
             
-
-# if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
-#     mode()
-
-
 
 
 
 
 padkeydriver.init()
 audioFuncs.init()
-audioFuncs.modeInit()
-
-while flag != 5:
-    modeLoop()
-    time.sleep(0.3)
-
-
-audioFuncs.audio_thread_function(serverSetup.folder_keys[folder_index][:-1])
-audioFuncs.autoNext()
-#Toggle_swtich()
-mainLoop()
-
 
 while True:
-    break    
-    
+    looping_on_mode()
+    while flag != MODE_MODE:
+        mainLoop()
+        time.sleep(0.3)
+

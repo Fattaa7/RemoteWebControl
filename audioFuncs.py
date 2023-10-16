@@ -4,23 +4,34 @@ import serverSetup
 import lcd
 from time import sleep
 
-is_playing = 0
 #select_folder = "liked"
-
+SET = 1
+NOT_SET = 0
+full_name_flag = NOT_SET
 
 def init():
     lcd.init()
     
+def setFullNameFlag(value):
+    global full_name_flag
+    full_name_flag = value
 
 def modeInit():
+    serverSetup.current_audio_index = 0
     serverSetup.getFolders()
     display_folderName(serverSetup.folder_keys[0])
+    
 
 
-def audio_thread_function(select_folder):
+def audio_start(select_folder):
     serverSetup.folder_selected = select_folder
     serverSetup.init()
     play_current_audio(serverSetup.current_audio_index)
+    autoNext()
+
+def audio_stop():
+    serverSetup.p.stop()
+
 
 # Function to play the current audio
 def play_current_audio(index):
@@ -109,5 +120,8 @@ def display_SongName(file_name, folder_name):
     str2 = str_value[16:]
     #lcd.swapBacklight()
     if len(str2) > 0:
-        lcd.long_string(lcd.lcdDisplay,str2,2)
+        if full_name_flag == SET:
+            lcd.long_string(lcd.lcdDisplay,str2,2)
+        elif full_name_flag == NOT_SET:
+            lcd.lcdDisplay.lcd_display_string(str2,2)
 
