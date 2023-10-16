@@ -59,15 +59,16 @@ def mainLoop():
             
         if pressed_key == padkeydriver.BACKWARD:
             audioFuncs.backward()
+            audioFuncs.audio_thread_function("gustixa")
             
     threading.Timer(0.3, mainLoop).start()
 
     
-if GPIO.input(TOGGLE_GPIO) == GPIO.HIGH:
+if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
     mode()
 
 padkeydriver.init()
-audioFuncs.audio_thread_function()
+audioFuncs.audio_thread_function("liked")
 audioFuncs.autoNext()
 #Toggle_swtich()
 mainLoop()
