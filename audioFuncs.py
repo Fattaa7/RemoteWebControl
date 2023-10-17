@@ -3,11 +3,13 @@ import time
 import serverSetup
 import lcd
 from time import sleep
+import os
 
 #select_folder = "liked"
 SET = 1
 NOT_SET = 0
 full_name_flag = NOT_SET
+folder_index = 0
 
 def init():
     lcd.init()
@@ -23,7 +25,9 @@ def modeInit():
     
 
 
-def audio_start(select_folder):
+def audio_start(select_folder, fldr_indx):
+    global folder_index
+    folder_index = fldr_indx
     serverSetup.folder_selected = select_folder
     serverSetup.init()
     play_current_audio(serverSetup.current_audio_index)
@@ -39,6 +43,9 @@ def play_current_audio(index):
         file_name = serverSetup.object_keys[index]
         folder_name = serverSetup.folder_selected
         key = f"{folder_name}/{file_name}"  # Adjust the 'Key' to include the folder path
+        with open('output.txt', 'w') as f:
+            f.write(str(folder_index) + '\n')  # Writing folder_name on the first line
+            f.write(str(serverSetup.current_audio_index))
         print(key)
         url = serverSetup.s3.generate_presigned_url('get_object', Params={'Bucket': serverSetup.aws_s3_bucket, 'Key': file_name})
         serverSetup.p.set_mrl(url)

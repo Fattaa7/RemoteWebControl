@@ -7,27 +7,20 @@ from datetime import datetime
 from subprocess import check_output
 import serverSetup
 import time
+import os
+
 
 MODE_MODE = 0
 AUDIO_MODE = 5
+LAST_PLAYED_MODE = 9
+DEV_MODE = 22
 
+flag = LAST_PLAYED_MODE
 folder_index = 0
+
 IP = check_output(["hostname", "-I"], encoding="utf8").split()[0]
 
-flag = 0
-#main_timer : threading.Timer
 
-BUTTON_GPIO = 17
-TOGGLE_GPIO = 27
-
-def button_pressed_callback(channel):
-    print("Button pressed!")
-   # lcd.swapBacklight()
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(BUTTON_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.add_event_detect(BUTTON_GPIO, GPIO.FALLING, callback=button_pressed_callback, bouncetime=200)
-
-GPIO.setup(TOGGLE_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def DevMode():
     print("Buttooon!")
@@ -37,29 +30,27 @@ def DevMode():
     while True:
         continue
 
+def play_last_played_song():
+    global flag
+    with open('output.txt', 'r') as f:
+        folder_name_read = f.readline().rstrip()  # Read the first line
+        file_name_read = f.readline().rstrip()  # Read the second line
+        serverSetup.current_audio_index = int(file_name_read)
+        audioFuncs.audio_start(serverSetup.folder_keys[int(folder_name_read)][:-1],int(folder_name_read))
+        flag = AUDIO_MODE
+    
+
 def looping_on_mode():
     #serverSetup.getFolders()
-    audioFuncs.modeInit()
     audioFuncs.audio_stop()
-    while flag != AUDIO_MODE:
-        modeLoop()
-        time.sleep(0.3)
-    audioFuncs.audio_start(serverSetup.folder_keys[folder_index][:-1])
-    #mainLoop()
-
-
-def Toggle_swtich():
-        if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
-            lcd.setBacklight(0)
-        elif GPIO.input(TOGGLE_GPIO) == GPIO.HIGH:
-            lcd.setBacklight(1)
-        threading.Timer(0.3,Toggle_swtich).start()
-
-def init():
-    serverSetup.getFolders()
-    lcd.init()
-    audioFuncs.display_folderName(serverSetup.folder_keys[0])
-    
+    audioFuncs.modeInit()
+    if flag == LAST_PLAYED_MODE:
+        play_last_played_song()
+    elif flag == MODE_MODE:
+        while flag == MODE_MODE:
+            modeLoop()
+            time.sleep(0.3)
+        audioFuncs.audio_start(serverSetup.folder_keys[folder_index][:-1],folder_index)
 
 
 def mainLoop():
@@ -72,7 +63,7 @@ def mainLoop():
             audioFuncs.previous_audio()
             
         if pressed_key == padkeydriver.NEXT:
-            flag = 0
+            flag = MODE_MODE
             return
             #looping_on_mode()
             audioFuncs.next_audio()
@@ -120,13 +111,33 @@ def modeLoop():
 
 
 
-
 padkeydriver.init()
 audioFuncs.init()
 
 while True:
     looping_on_mode()
-    while flag != MODE_MODE:
+    while flag == AUDIO_MODE:
         mainLoop()
         time.sleep(0.3)
 
+
+
+
+# def Toggle_swtich():
+#         if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
+#             lcd.setBacklight(0)
+#         elif GPIO.input(TOGGLE_GPIO) == GPIO.HIGH:
+#             lcd.setBacklight(1)
+#         threading.Timer(0.3,Toggle_swtich).start()
+
+#BUTTON_GPIO = 17
+# TOGGLE_GPIO = 27
+
+# def button_pressed_callback(channel):
+#     print("Button pressed!")
+#    # lcd.swapBacklight()
+# GPIO.setmode(GPIO.BCM)
+# GPIO.setup(BUTTON_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+# GPIO.add_event_detect(BUTTON_GPIO, GPIO.FALLING, callback=button_pressed_callback, bouncetime=200)
+
+# GPIO.setup(TOGGLE_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
