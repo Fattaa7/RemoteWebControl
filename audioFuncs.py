@@ -43,12 +43,12 @@ def play_current_audio(index):
         file_name = serverSetup.object_keys[index]
         folder_name = serverSetup.folder_selected
         key = f"{folder_name}/{file_name}"  # Adjust the 'Key' to include the folder path
-        with open('output.txt', 'w') as f:
-            f.write(str(folder_index) + '\n')  # Writing folder_name on the first line
-            f.write(str(serverSetup.current_audio_index))
+        # with open('output.txt', 'w') as f:
+            # f.write(str(folder_index) + '\n')  # Writing folder_name on the first line
+            # f.write(str(serverSetup.current_audio_index))
         print(key)
         url = serverSetup.s3.generate_presigned_url('get_object', Params={'Bucket': serverSetup.aws_s3_bucket, 'Key': file_name})
-        serverSetup.p.set_mrl(url)
+        serverSetup.p.set_mrl(url, ':network-caching=1000')
         serverSetup.p.play()
         display_SongName(file_name,folder_name)
         
@@ -96,8 +96,12 @@ def backward():
     serverSetup.p.set_position(serverSetup.p.get_position() - 0.03)
 
 def autoNext():
+    # place a flag here to check on the loop option
     if not serverSetup.p.is_playing():
         if serverSetup.p.get_position() > 0.98:
+            #Add check if loop is enabled
+            #if no then next audio
+            #if yes then play current audio again
             next_audio()
     threading.Timer(1, autoNext).start()
         
