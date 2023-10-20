@@ -1,7 +1,9 @@
 # RetroMan - Raspberry Pi Music Player
 
+![RetroMan](https://github.com/Fattaa7/RetroMan/assets/49599287/5813d0aa-bf6d-43d8-9bc1-8d0c2a80a25a)
+
+
 RetroMan is a music streaming and playback system using Raspbian Lite. This Python project allows you to stream music from an AWS S3 bucket and play songs and playlists on a 1602 I2C LCD display. You can easily browse and select songs or playlists from the cloud, or download them for offline playback. The system is designed for both immediate playback and future listening sessions.
-- Can be used with any device with 3.5mm audio jack.
 - **WARNING: You use your own AWS S3 bucket!**
 
 ## Features
@@ -11,6 +13,12 @@ RetroMan is a music streaming and playback system using Raspbian Lite. This Pyth
 - Download playlists for offline listening.
 - Easily switch between cloud and downloaded playlists.
 - Control playback, volume, and LCD display with the hardware components.
+- Can be used with any device with 3.5mm audio jack.
+
+## Demonstration Video
+
+https://github.com/Fattaa7/RetroMan/assets/49599287/c49a4db3-101a-4579-a553-fe45c6f1de09
+
 
 ## Project Components
 
@@ -20,19 +28,24 @@ RetroMan is a music streaming and playback system using Raspbian Lite. This Pyth
 - 5 Push Buttons
 - 1 Breadboard to mount the 5 push buttons
 
-### Push Buttons Functionality
+### Push Buttons / Switch Functionality
 
 - **Next**: Navigate to the next song or playlist.
 - **Previous**: Navigate to the previous song or playlist.
 - **Play/Pause/Select**: Play or pause music and select options.
 - **Toggle LCD Backlight**: Turn the LCD backlight on/off.
 - **Exit Mode**: Exit the current mode (e.g., exit a playlist to search for another).
+- **Toggle Switch**:
+    - The toggle switch serves a dual purpose:
+        1. **Up**: Set the volume to high.
+        2. **Down**: Set the volume to low.
 
-### Toggle Switch
+## To Download a Playlist
 
-The toggle switch serves a dual purpose:
-- **Up**: Set the volume to high.
-- **Down**: Set the volume to low.
+1. Navigate and Enter the desired playlist.
+2. Hold **LCD Backlight Button** down.
+3. Press **Pause/Play Button**
+- For this version there is no feedback that the download is finished, waiitng for a good 5 minutes should ensure that all songs finished downloading and you can immediately see it in the downloaded section.
 
 
 ## Configure AWS Credentials and Run the RetroMan Python Script
@@ -45,21 +58,26 @@ The toggle switch serves a dual purpose:
 ## Usage
 
 1. Ensure that you have the required hardware components set up.
+   
+3. Ensure that your device is connected to the internet for streaming from the Cloud.
+   - **You don't neet connection for offline locally downloaded songs.**
 
-2. Clone this repository to your Raspberry Pi.
+4. Clone this repository to your Raspberry Pi.
 
    ```bash
    git clone https://github.com/Fattaa7/RetroMan.git
    
-3. Install the necessary Python dependencies using the `requirements.txt` file:
+5. Install the necessary Python dependencies using the `requirements.txt` file:
 
     ```bash
     pip install -r requirements.txt
     ```
-4. Run the program:
-   ```bash python keypadcontrol.py ```
+6. Run the program:
+   ```bash
+    python keypadcontrol.py
+    ```
 
-5. Plug your favorite headphones/headset/speaker with 3.5mm Audio jack and enjoy. 
+8. Plug your favorite headphones/headset/speaker with 3.5mm Audio jack and enjoy. 
 
 
 ## Running at Boot
@@ -73,7 +91,7 @@ To ensure the RetroMan player runs at boot on Raspbian Lite, follow these steps:
     ```
 
 2. Copy and paste the following contents into the file:
-   Change ```bash /home/pi/Desktop/web/RemoteWebControl/keypadcontrol.py ``` with your own directory
+   Change ```bash /home/pi/Desktop/web/RetroMan/keypadcontrol.py ``` with your own directory
     ```ini
     [Unit]
     Description=playerApp
