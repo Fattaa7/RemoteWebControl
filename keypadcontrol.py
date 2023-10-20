@@ -30,6 +30,7 @@ flag = MODE_MODE
 
 folder_index = 0
 download_folders = []
+button_pressed_time = None
 
 
 
@@ -41,9 +42,11 @@ def Toggle_swtich(channel):
             serverSetup.p.audio_set_volume(100)
 
 def nextBtn(channel):
+    global button_pressed_time
     if GPIO.input(channel) == GPIO.LOW:
         time.sleep(0.1)
         if GPIO.input(channel) == GPIO.LOW:
+            button_pressed_time = time.time()  # Record the start time of the button press
             global flag       
             global folder_index
             print("clicked next")
@@ -57,10 +60,20 @@ def nextBtn(channel):
                     audioFuncs.display_folderName(serverSetup.folder_keys[folder_index])
                     
             elif flag == AUDIO_MODE:
-                audioFuncs.next_audio()
+                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.5:
+                    pass  # Wait until the button is released or 0.5 seconds has passed
+                if time.time() - button_pressed_time > 0.5:
+                    audioFuncs.next_audio()  # Execute the function if pressed for 0.5 seconds or more
+                else:
+                    audioFuncs.forward()  # Execute the function if pressed less than 0.5 seconds
             
             elif flag == DOWNLOADED_AUDIO_MODE:
-                audioFuncs.next_audio()
+                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.5:
+                    pass  # Wait until the button is released or 0.5 seconds has passed
+                if time.time() - button_pressed_time > 0.5:
+                    audioFuncs.next_audio()  # Execute the function if pressed for 0.5 seconds or more
+                else:
+                    audioFuncs.forward()  # Execute the function if pressed less than 0.5 seconds
                     
             elif flag == DEV_MODE:
                 if folder_index < len(download_folders) - 1:
@@ -73,11 +86,14 @@ def nextBtn(channel):
 
 
 def prevBtn(channel):
+    global button_pressed_time
     if GPIO.input(channel) == GPIO.LOW:
         time.sleep(0.1)
         if GPIO.input(channel) == GPIO.LOW:
+            button_pressed_time = time.time()  # Record the start time of the button press
             global flag       
             global folder_index
+            
             print("clicked prev")
             if flag == MODE_MODE:
                 if folder_index > 0:
@@ -89,11 +105,24 @@ def prevBtn(channel):
 
             elif flag == AUDIO_MODE:
                 print("REACHERRRRR PREV BTN")
-                audioFuncs.previous_audio() 
+                # Implement the logic for long press
+                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.5:
+                    pass  # Wait until the button is released or 0.5 seconds has passed
+                if time.time() - button_pressed_time > 0.5:
+                    audioFuncs.previous_audio()  # Execute the function if pressed for 0.5 seconds or more
+                else:
+                    audioFuncs.backward()  # Execute the function if pressed less than 0.5 seconds
+
                 
             elif flag == DOWNLOADED_AUDIO_MODE:
                 print("PREVIOUS FROM DOWNLOAD")
-                audioFuncs.previous_audio() 
+                # Implement the logic for long press
+                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.5:
+                    pass  # Wait until the button is released or 0.5 seconds has passed
+                if time.time() - button_pressed_time > 0.5:
+                    audioFuncs.previous_audio()  # Execute the function if pressed for 0.5 seconds or more
+                else:
+                    audioFuncs.backward()  # Execute the function if pressed less than 0.5 seconds
 
             elif flag == DEV_MODE:
                 print("REACHER PREV BTN")

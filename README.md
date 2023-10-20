@@ -30,8 +30,12 @@ https://github.com/Fattaa7/RetroMan/assets/49599287/c49a4db3-101a-4579-a553-fe45
 
 ### Push Buttons / Switch Functionality
 
-- **Next**: Navigate to the next song or playlist.
-- **Previous**: Navigate to the previous song or playlist.
+- **Next**: 
+    1. Skip forward in a song **when** pressed one time.
+    2. Navigate to the next song or playlist **when** pressed for 0.5 seconds.
+- **Previous**: 
+    1. skip backward in a song **when** pressed one time.
+    2. Navigate to the previous song or playlist **when** pressed for 0.5 seconds.
 - **Play/Pause/Select**: Play or pause music and select options.
 - **Toggle LCD Backlight**: Turn the LCD backlight on/off.
 - **Exit Mode**: Exit the current mode (e.g., exit a playlist to search for another).
