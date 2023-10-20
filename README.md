@@ -49,7 +49,7 @@ The toggle switch serves a dual purpose:
 2. Clone this repository to your Raspberry Pi.
 
    ```bash
-   git clone https://github.com/Fattaa7/RemoteWebControl.git
+   git clone https://github.com/Fattaa7/RetroMan.git
    
 3. Install the necessary Python dependencies using the `requirements.txt` file:
 
@@ -80,7 +80,7 @@ To ensure the RetroMan player runs at boot on Raspbian Lite, follow these steps:
     After=multi-user.target
 
     [Service]
-    ExecStart=/usr/bin/python /home/pi/Desktop/web/RemoteWebControl/keypadcontrol.py
+    ExecStart=/usr/bin/python /home/pi/Desktop/web/RetroMan/keypadcontrol.py
     Restart=always
     RestartSec=2
     StandardOutput=syslog
