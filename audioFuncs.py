@@ -37,7 +37,6 @@ def modeInit():
         display_folderName(serverSetup.folder_keys[0])
     
 
-
 def audio_start(select_folder, fldr_indx):
     global folder_index
     folder_index = fldr_indx
@@ -54,13 +53,8 @@ def audio_start_downloaded():
     play_current_audio_downloaded(downloaded_songs_list[0])
     autoNext()
     
-    
-    
-
 def audio_stop():
     serverSetup.p.stop()
-
-
 
 def play_current_audio_downloaded(song):
     print("reaching the play/downloading part")
@@ -69,7 +63,6 @@ def play_current_audio_downloaded(song):
     serverSetup.p.set_mrl(f"{path_dir}/{downloaded_folder_name}/{song}")
     serverSetup.p.play()
     display_SongName_Download(song)
-
 
 # Function to play the current audio
 def play_current_audio(index):
@@ -86,9 +79,6 @@ def play_current_audio(index):
         serverSetup.p.play()
         display_SongName(file_name,folder_name)
         
-
-
-
 def previous_audio():
     if serverSetup.current_audio_index > 0:
         serverSetup.current_audio_index -= 1
@@ -106,7 +96,6 @@ def previous_audio():
         else:
             serverSetup.current_audio_index = len(serverSetup.object_keys) - 1
             play_current_audio(serverSetup.current_audio_index)
-
 
 # Function to play the next audio
 def next_audio():
@@ -130,8 +119,6 @@ def next_audio():
             serverSetup.p.stop()
             play_current_audio(serverSetup.current_audio_index)
 
-
-
 # Function to pause or resume playback
 def pause_audio():
     if serverSetup.p.is_playing() == 1:
@@ -143,7 +130,6 @@ def pause_audio():
 
 def forward():
     serverSetup.p.set_position(serverSetup.p.get_position() + 0.03)
-
 
 def backward():
     serverSetup.p.set_position(serverSetup.p.get_position() - 0.03)
@@ -158,9 +144,6 @@ def autoNext():
             next_audio()
     threading.Timer(1, autoNext).start()
         
-    
-
-
 #display folder name without the '/' in the end of the name
 def display_folderName(filed_name):
     lcd.lcdDisplay.lcd_clear()

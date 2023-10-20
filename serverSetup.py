@@ -21,11 +21,15 @@ threads = []
 s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
 def getFolders():
-    global folder_keys
-    response = s3.list_objects_v2(Bucket=aws_s3_bucket)
-    print("hellop")
-    folder_keys = [obj['Key'] for obj in response.get('Contents', []) if obj['Size'] == 0]
-    print("this is " + str(len(folder_keys)))
+    try:
+        global folder_keys
+        response = s3.list_objects_v2(Bucket=aws_s3_bucket)
+        print("hellop")
+        folder_keys = [obj['Key'] for obj in response.get('Contents', []) if obj['Size'] == 0]
+        print("this is " + str(len(folder_keys)))
+    except Exception as e:
+        folder_keys = []
+        print("Network Error!")
 
 
 def init():
