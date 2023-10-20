@@ -1,8 +1,8 @@
 # RetroMan - Raspberry Pi Music Player
 
 RetroMan is a music streaming and playback system using Raspbian Lite. This Python project allows you to stream music from an AWS S3 bucket and play songs and playlists on a 1602 I2C LCD display. You can easily browse and select songs or playlists from the cloud, or download them for offline playback. The system is designed for both immediate playback and future listening sessions.
-Can be used with any device with 3.5mm audio jack.
-**You use your own AWS S3 bucket**
+- Can be used with any device with 3.5mm audio jack.
+- **WARNING: You use your own AWS S3 bucket!**
 
 ## Features
 
