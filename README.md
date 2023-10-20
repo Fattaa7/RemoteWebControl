@@ -1,6 +1,16 @@
 # RetroMan - Raspberry Pi Music Player
 
-RetroMan is a Raspberry Pi 4 (Model B) based music streaming and playback system using Raspbian Lite. This Python project allows you to stream music from an AWS S3 bucket and play songs and playlists on a 1602 I2C LCD display. You can easily browse and select songs or playlists from the cloud, or download them for offline playback. The system is designed for both immediate playback and future listening sessions.
+RetroMan is a music streaming and playback system using Raspbian Lite. This Python project allows you to stream music from an AWS S3 bucket and play songs and playlists on a 1602 I2C LCD display. You can easily browse and select songs or playlists from the cloud, or download them for offline playback. The system is designed for both immediate playback and future listening sessions.
+Can be used with any device with 3.5mm audio jack.
+**You use your own AWS S3 bucket**
+
+## Features
+
+- Stream and play music from AWS S3.
+- Browse and select songs and playlists on a 1602 I2C LCD.
+- Download playlists for offline listening.
+- Easily switch between cloud and downloaded playlists.
+- Control playback, volume, and LCD display with the hardware components.
 
 ## Project Components
 
@@ -24,26 +34,33 @@ The toggle switch serves a dual purpose:
 - **Up**: Set the volume to high.
 - **Down**: Set the volume to low.
 
-## Usage
-
-1. Ensure that you have the required hardware components set up.
-
-2. Install the necessary Python dependencies using the `requirements.txt` file:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-3. Clone this repository to your Raspberry Pi.
-
-   ```bash
-   git clone https://github.com/Fattaa7/RemoteWebControl.git
 
 ## Configure AWS Credentials and Run the RetroMan Python Script
 
 1. Configure your AWS credentials and access keys in a `.env` file.
 
 2. Run the RetroMan Python script to start using the music player.
+
+
+## Usage
+
+1. Ensure that you have the required hardware components set up.
+
+2. Clone this repository to your Raspberry Pi.
+
+   ```bash
+   git clone https://github.com/Fattaa7/RemoteWebControl.git
+   
+3. Install the necessary Python dependencies using the `requirements.txt` file:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+4. Run the program:
+   ```bash python keypadcontrol.py ```
+
+5. Plug your favorite headphones/headset/speaker with 3.5mm Audio jack and enjoy. 
+
 
 ## Running at Boot
 
@@ -85,11 +102,4 @@ To ensure the RetroMan player runs at boot on Raspbian Lite, follow these steps:
     sudo systemctl enable player.service
     ```
 
-## Features
-
-- Stream and play music from AWS S3.
-- Browse and select songs and playlists on a 1602 I2C LCD.
-- Download playlists for offline listening.
-- Easily switch between cloud and downloaded playlists.
-- Control playback, volume, and LCD display with the hardware components.
 
