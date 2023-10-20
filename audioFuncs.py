@@ -162,7 +162,7 @@ def display_SongName_Download(song):
     print(str_value)
     str1 = str_value[:16]
     lcd.lcdDisplay.lcd_display_string(str1, 1)
-    str2 = str_value[16:]
+    str2 = str_value[16:32]
     #lcd.swapBacklight()
     if len(str2) > 0:
         if full_name_flag == SET:
@@ -177,7 +177,7 @@ def display_SongName(file_name, folder_name):
     print(str_value)
     str1 = str_value[:16]
     lcd.lcdDisplay.lcd_display_string(str1, 1)
-    str2 = str_value[16:]
+    str2 = str_value[16:32]
     if len(str2) > 0:
         if full_name_flag == SET:
             lcd.long_string(lcd.lcdDisplay,str2,2)

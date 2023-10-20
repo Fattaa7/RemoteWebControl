@@ -3,6 +3,7 @@ import vlc
 import os
 import threading
 from dotenv import load_dotenv
+import random
 # AWS S3 Configuration
 load_dotenv()
 aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
@@ -29,6 +30,7 @@ def init():
     response = s3.list_objects_v2(Bucket=aws_s3_bucket, Prefix=f"{folder_selected}/")
     # Create a list to store object keys
     object_keys = [obj['Key'] for obj in response.get('Contents', []) if obj['Key'] != f"{folder_selected}/"]
+    random.shuffle(object_keys)
     #random.shuffle(object_keys)  # for future use
     print(len(object_keys))
 

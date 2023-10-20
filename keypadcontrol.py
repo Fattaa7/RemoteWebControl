@@ -7,7 +7,7 @@ from subprocess import check_output
 import serverSetup
 import time
 import os
-
+import random
 
 MODE_MODE = 0
 AUDIO_MODE = 5
@@ -181,6 +181,7 @@ def DevMode():
         return
     for file in download_folders:
         print(file)
+    random.shuffle(download_folders)
     audioFuncs.display_download_folderName(download_folders[0])
 
 
