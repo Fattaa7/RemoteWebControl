@@ -60,17 +60,17 @@ def nextBtn(channel):
                     audioFuncs.display_folderName(serverSetup.folder_keys[folder_index])
                     
             elif flag == AUDIO_MODE:
-                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.5:
+                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.4:
                     pass  # Wait until the button is released or 0.5 seconds has passed
-                if time.time() - button_pressed_time > 0.5:
+                if time.time() - button_pressed_time > 0.4:
                     audioFuncs.next_audio()  # Execute the function if pressed for 0.5 seconds or more
                 else:
                     audioFuncs.forward()  # Execute the function if pressed less than 0.5 seconds
             
             elif flag == DOWNLOADED_AUDIO_MODE:
-                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.5:
+                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.4:
                     pass  # Wait until the button is released or 0.5 seconds has passed
-                if time.time() - button_pressed_time > 0.5:
+                if time.time() - button_pressed_time > 0.4:
                     audioFuncs.next_audio()  # Execute the function if pressed for 0.5 seconds or more
                 else:
                     audioFuncs.forward()  # Execute the function if pressed less than 0.5 seconds
@@ -106,9 +106,9 @@ def prevBtn(channel):
             elif flag == AUDIO_MODE:
                 print("REACHERRRRR PREV BTN")
                 # Implement the logic for long press
-                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.5:
+                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.4:
                     pass  # Wait until the button is released or 0.5 seconds has passed
-                if time.time() - button_pressed_time > 0.5:
+                if time.time() - button_pressed_time > 0.4:
                     audioFuncs.previous_audio()  # Execute the function if pressed for 0.5 seconds or more
                 else:
                     audioFuncs.backward()  # Execute the function if pressed less than 0.5 seconds
@@ -117,9 +117,9 @@ def prevBtn(channel):
             elif flag == DOWNLOADED_AUDIO_MODE:
                 print("PREVIOUS FROM DOWNLOAD")
                 # Implement the logic for long press
-                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.5:
+                while GPIO.input(channel) == GPIO.LOW and time.time() - button_pressed_time <= 0.4:
                     pass  # Wait until the button is released or 0.5 seconds has passed
-                if time.time() - button_pressed_time > 0.5:
+                if time.time() - button_pressed_time > 0.4:
                     audioFuncs.previous_audio()  # Execute the function if pressed for 0.5 seconds or more
                 else:
                     audioFuncs.backward()  # Execute the function if pressed less than 0.5 seconds
