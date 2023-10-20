@@ -1,7 +1,6 @@
 import drivers
 from drivers import i2c_dev
 from time import sleep
-import threading
 
 lcdDisplay = 0
 

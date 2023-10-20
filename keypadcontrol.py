@@ -36,10 +36,8 @@ download_folders = []
 
 def Toggle_swtich(channel):
         if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
-            print("THIS IS LOW")
             serverSetup.p.audio_set_volume(50)
         elif GPIO.input(TOGGLE_GPIO) == GPIO.HIGH:
-            print("THIS IS HIGG")
             serverSetup.p.audio_set_volume(100)
 
 def nextBtn(channel):
@@ -161,6 +159,8 @@ def lcdBtn(channel):
             global folder_index
             print("clicked lcd")       
             lcd.swapBacklight()
+
+################## Modes - Screens #######################
 
 def DevMode():
     # lcd.init()

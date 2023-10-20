@@ -1,24 +1,36 @@
 import boto3
 import vlc
-import random
 import os
 import threading
+from dotenv import load_dotenv
 # AWS S3 Configuration
-aws_access_key_id = "AKIASTCUAEMDIYODMZG4"
-aws_secret_access_key = "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"
+load_dotenv()
+aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 aws_s3_bucket = "late-start"
 folder_selected = ""
 object_keys = []
 folder_keys = []
+
+
+# Initialize VLC media player
 p = vlc.MediaPlayer()
 vlc_instance = vlc.Instance()
+current_audio_index = 0
 
-
-
-threads = []
+threads = [] # For downloading the playlist
 
 # Initialize S3 client
 s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
+def init():
+    global object_keys
+    # List objects in the S3 bucket
+    response = s3.list_objects_v2(Bucket=aws_s3_bucket, Prefix=f"{folder_selected}/")
+    # Create a list to store object keys
+    object_keys = [obj['Key'] for obj in response.get('Contents', []) if obj['Key'] != f"{folder_selected}/"]
+    #random.shuffle(object_keys)  # for future use
+    print(len(object_keys))
 
 def getFolders():
     try:
@@ -32,24 +44,6 @@ def getFolders():
         print("Network Error!")
 
 
-def init():
-    global object_keys
-    # List objects in the S3 bucket
-    response = s3.list_objects_v2(Bucket=aws_s3_bucket, Prefix=f"{folder_selected}/")
-    
-    # Create a list to store object keys
-    
-    object_keys = [obj['Key'] for obj in response.get('Contents', []) if obj['Key'] != f"{folder_selected}/"]
-    
-    #random.shuffle(object_keys)  # for future use
-    
-    print(len(object_keys))
-    #p = vlc.MediaPlayer()
-
-
-# Initialize VLC media player
-current_audio_index = 0
-audio_thread = None
 
 
 def download_file_s3(bucket, key, filename):
@@ -66,7 +60,7 @@ def downloadPlaylist():
         print("already Downloaded")
         return
     os.mkdir(dir)
-    for i,key in enumerate(object_keys):
+    for key in enumerate(object_keys):
         file_name  = key[len(folder_selected) + 1:-4]  # Adjust the string to remove the folder prefix
         t = threading.Thread(target=download_file_s3, args=(aws_s3_bucket, key, f"{dir}/{file_name}.mp3"))
         threads.append(t)

@@ -1,19 +1,18 @@
 import threading
-import time
 import serverSetup
 import lcd
-from time import sleep
 import os
 
 #select_folder = "liked"
 SET = 1
 NOT_SET = 0
-full_name_flag = NOT_SET
-folder_index = 0
 
 DOWNLOADED_MODE = 7
 CLOUD_MODE = 0
 
+
+full_name_flag = NOT_SET #flag for future use
+folder_index = 0
 mode = CLOUD_MODE
 
 downloaded_folder_name = ""
@@ -28,6 +27,7 @@ def setFullNameFlag(value):
     full_name_flag = value
 
 def modeInit():
+    lcd.lcdDisplay.lcd_clear()
     serverSetup.current_audio_index = 0
     serverSetup.getFolders()
     if len(serverSetup.folder_keys) == 0:
@@ -70,9 +70,6 @@ def play_current_audio(index):
         file_name = serverSetup.object_keys[index]
         folder_name = serverSetup.folder_selected
         key = f"{folder_name}/{file_name}"  # Adjust the 'Key' to include the folder path
-        # with open('output.txt', 'w') as f:
-            # f.write(str(folder_index) + '\n')  # Writing folder_name on the first line
-            # f.write(str(serverSetup.current_audio_index))
         print(key)
         url = serverSetup.s3.generate_presigned_url('get_object', Params={'Bucket': serverSetup.aws_s3_bucket, 'Key': file_name})
         serverSetup.p.set_mrl(url, ':network-caching=1000')
@@ -148,13 +145,9 @@ def autoNext():
 def display_folderName(filed_name):
     lcd.lcdDisplay.lcd_clear()
     file_name = filed_name[:-1]
-    #file_name = "Playlist: " + file_name
     str1 = file_name[:16]
     lcd.lcdDisplay.lcd_display_string("Cloud Playlist: ", 1)
     lcd.lcdDisplay.lcd_display_string(str1, 2)
-    # str2 = file_name[16:]
-    # if len(str2) > 0:
-    #     lcd.long_string(lcd.lcdDisplay,str2,2)
 
 def display_download_folderName(filed_name):
     lcd.lcdDisplay.lcd_clear()
@@ -162,9 +155,6 @@ def display_download_folderName(filed_name):
     str1 = filed_name[:16]
     lcd.lcdDisplay.lcd_display_string("DwnLded Plylist:", 1)
     lcd.lcdDisplay.lcd_display_string(str1, 2)
-    # str2 = file_name[16:]
-    # if len(str2) > 0:
-    #     lcd.long_string(lcd.lcdDisplay,str2,2)
 
 def display_SongName_Download(song):
     lcd.lcdDisplay.lcd_clear()
@@ -188,7 +178,6 @@ def display_SongName(file_name, folder_name):
     str1 = str_value[:16]
     lcd.lcdDisplay.lcd_display_string(str1, 1)
     str2 = str_value[16:]
-    #lcd.swapBacklight()
     if len(str2) > 0:
         if full_name_flag == SET:
             lcd.long_string(lcd.lcdDisplay,str2,2)
