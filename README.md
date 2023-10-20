@@ -91,7 +91,7 @@ To ensure the RetroMan player runs at boot on Raspbian Lite, follow these steps:
     ```
 
 2. Copy and paste the following contents into the file:
-   Change ```bash /home/pi/Desktop/web/RetroMan/keypadcontrol.py ``` with your own directory
+   Change ``` /home/pi/Desktop/web/RetroMan/keypadcontrol.py ``` with your own directory
     ```ini
     [Unit]
     Description=playerApp
