@@ -112,7 +112,12 @@ def pauseBtn(channel):
         if flag == AUDIO_MODE:
             if GPIO.input(LCD_GPIO) == GPIO.LOW:
                 serverSetup.downloadPlaylist()
-
+        elif flag == DOWNLOADED_AUDIO_MODE:
+            if GPIO.input(LCD_GPIO) == GPIO.LOW:
+                os.system(f"rm -r downloads/{download_folders[folder_index]}")
+                print(f"Deleted {download_folders[folder_index]}")
+                flag = DEV_MODE
+                DevMode()
         time.sleep(0.1)
         if GPIO.input(channel) == GPIO.LOW:
             print("clicked pause")

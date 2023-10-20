@@ -60,7 +60,7 @@ def downloadPlaylist():
         print("already Downloaded")
         return
     os.mkdir(dir)
-    for key in enumerate(object_keys):
+    for i,key in enumerate(object_keys):
         file_name  = key[len(folder_selected) + 1:-4]  # Adjust the string to remove the folder prefix
         t = threading.Thread(target=download_file_s3, args=(aws_s3_bucket, key, f"{dir}/{file_name}.mp3"))
         threads.append(t)
