@@ -12,6 +12,7 @@ import os
 
 MODE_MODE = 0
 AUDIO_MODE = 5
+DOWNLOADED_AUDIO_MODE = 10
 LAST_PLAYED_MODE = 9
 DEV_MODE = 22
 
@@ -29,6 +30,7 @@ TOGGLE_GPIO = 17
 flag = MODE_MODE
 folder_index = 0
 
+download_folders = []
 
 GPIO.setmode(GPIO.BCM)
 
@@ -68,9 +70,21 @@ def nextBtn(channel):
                 elif folder_index == len(serverSetup.folder_keys) -1:
                     folder_index = 0
                     audioFuncs.display_folderName(serverSetup.folder_keys[folder_index])
+                    
             elif flag == AUDIO_MODE:
-                    audioFuncs.next_audio()
+                audioFuncs.next_audio()
             
+            elif flag == DOWNLOADED_AUDIO_MODE:
+                audioFuncs.next_audio()
+                    
+            elif flag == DEV_MODE:
+                if folder_index < len(download_folders) - 1:
+                    folder_index += 1
+                    audioFuncs.display_download_folderName(download_folders[folder_index])
+                elif folder_index == len(download_folders) - 1:
+                    folder_index = 0
+                    audioFuncs.display_download_folderName(download_folders[folder_index])
+
 
 
 def prevBtn(channel):
@@ -89,21 +103,46 @@ def prevBtn(channel):
                     audioFuncs.display_folderName(serverSetup.folder_keys[folder_index])
 
             elif flag == AUDIO_MODE:
-                    audioFuncs.previous_audio()
-            
+                print("REACHERRRRR PREV BTN")
+                audioFuncs.previous_audio() 
+                
+            elif flag == DOWNLOADED_AUDIO_MODE:
+                print("PREVIOUS FROM DOWNLOAD")
+                audioFuncs.previous_audio() 
+
+            elif flag == DEV_MODE:
+                print("REACHER PREV BTN")
+                if folder_index > 0:
+                    folder_index -= 1
+                    audioFuncs.display_download_folderName(download_folders[folder_index])
+                elif folder_index == 0:
+                    folder_index = len(download_folders) - 1
+                    audioFuncs.display_download_folderName(download_folders[folder_index])
+
 
 def pauseBtn(channel):
     if GPIO.input(channel) == GPIO.LOW:
+        global flag       
+        global folder_index
+        if flag == AUDIO_MODE:
+            if GPIO.input(LCD_GPIO) == GPIO.LOW:
+                serverSetup.downloadPlaylist()
+
         time.sleep(0.1)
         if GPIO.input(channel) == GPIO.LOW:
-            global flag       
-            global folder_index
             print("clicked pause")
             if flag == MODE_MODE:
-                    flag = AUDIO_MODE
-                    audioFuncs.audio_start(serverSetup.folder_keys[folder_index][:-1],folder_index)
+                flag = AUDIO_MODE
+                audioFuncs.audio_start(serverSetup.folder_keys[folder_index][:-1],folder_index)
             elif flag == AUDIO_MODE:
-                    audioFuncs.pause_audio()
+                audioFuncs.pause_audio()
+            elif flag == DOWNLOADED_AUDIO_MODE:
+                audioFuncs.pause_audio()
+            elif flag == DEV_MODE:
+                flag = DOWNLOADED_AUDIO_MODE
+                audioFuncs.mode = audioFuncs.DOWNLOADED_MODE
+                audioFuncs.downloaded_folder_name = download_folders[folder_index]
+                audioFuncs.audio_start_downloaded()
             
 
 def exitBtn(channel):
@@ -122,7 +161,10 @@ def exitBtn(channel):
                 looping_on_mode()
             elif flag == AUDIO_MODE:
                 flag = MODE_MODE
-                looping_on_mode()            
+                looping_on_mode()
+            elif flag == DOWNLOADED_AUDIO_MODE:
+                flag = DEV_MODE
+                DevMode()            
 
 def lcdBtn(channel):
    if GPIO.input(channel) == GPIO.LOW:
@@ -134,10 +176,21 @@ def lcdBtn(channel):
             lcd.swapBacklight()
 
 def DevMode():
-    print("Buttooon!")
-    lcd.init()
-    lcd.lcdDisplay.lcd_display_string("IP Address is:",1)
-    lcd.lcdDisplay.lcd_display_string("" + str(IP),2)
+    # print("Buttooon!")
+    # lcd.init()
+    # lcd.lcdDisplay.lcd_display_string("IP Address is:",1)
+    # lcd.lcdDisplay.lcd_display_string("" + str(IP),2)
+    global download_folders
+    global folder_index
+    audioFuncs.audio_stop()
+    folder_index = 0
+    download_folders = os.listdir(r"/home/pi/Desktop/RemoteWebControl/downloads/")
+    if len(download_folders) == 0:
+        lcd.lcdDisplay.lcd_display_string("EMPTY!")
+        return
+    for file in download_folders:
+        print(file)
+    audioFuncs.display_download_folderName(download_folders[0])
 
 
 def looping_on_mode():
@@ -146,11 +199,14 @@ def looping_on_mode():
     audioFuncs.modeInit()
 
 
-
-counter = 0
+if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
+      serverSetup.p.audio_set_volume(50)
+elif GPIO.input(TOGGLE_GPIO) == GPIO.HIGH:
+      serverSetup.p.audio_set_volume(100)
 
 #padkeydriver.init()
 audioFuncs.init()
+#source_mode()
 looping_on_mode()
 
 GPIO.add_event_detect(NEXT_GPIO, GPIO.FALLING, callback=nextBtn)
@@ -168,11 +224,11 @@ GPIO.add_event_detect(LCD_GPIO, GPIO.FALLING, callback=lcdBtn)
 
 
 while True:
-    time.sleep(2)
     if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
         serverSetup.p.audio_set_volume(50)
     elif GPIO.input(TOGGLE_GPIO) == GPIO.HIGH:
         serverSetup.p.audio_set_volume(100)
+    time.sleep(2)
 
 
 

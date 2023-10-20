@@ -11,6 +11,15 @@ NOT_SET = 0
 full_name_flag = NOT_SET
 folder_index = 0
 
+DOWNLOADED_MODE = 7
+CLOUD_MODE = 0
+
+mode = CLOUD_MODE
+
+downloaded_folder_name = ""
+downloaded_songs_list = []
+path_dir = "/home/pi/Desktop/RemoteWebControl/downloads"
+
 def init():
     lcd.init()
     
@@ -21,7 +30,11 @@ def setFullNameFlag(value):
 def modeInit():
     serverSetup.current_audio_index = 0
     serverSetup.getFolders()
-    display_folderName(serverSetup.folder_keys[0])
+    if len(serverSetup.folder_keys) == 0:
+        lcd.lcdDisplay.lcd_display_string("Cloud Error!",1)
+        lcd.lcdDisplay.lcd_display_string("Try Dwnlds",2)
+    else:
+        display_folderName(serverSetup.folder_keys[0])
     
 
 
@@ -33,8 +46,29 @@ def audio_start(select_folder, fldr_indx):
     play_current_audio(serverSetup.current_audio_index)
     autoNext()
 
+def audio_start_downloaded():
+    global downloaded_songs_list
+    downloaded_songs_list = os.listdir(rf"{path_dir}/{downloaded_folder_name}")
+    for i in downloaded_songs_list:
+        print(i)
+    play_current_audio_downloaded(downloaded_songs_list[0])
+    autoNext()
+    
+    
+    
+
 def audio_stop():
     serverSetup.p.stop()
+
+
+
+def play_current_audio_downloaded(song):
+    print("reaching the play/downloading part")
+    #media = serverSetup.vlc_instance.media_new_path(f"{path_dir}/{downloaded_folder_name}/{song}")
+    print(f"{path_dir}/{downloaded_folder_name}/{song}")
+    serverSetup.p.set_mrl(f"{path_dir}/{downloaded_folder_name}/{song}")
+    serverSetup.p.play()
+    display_SongName_Download(song)
 
 
 # Function to play the current audio
@@ -59,23 +93,42 @@ def previous_audio():
     if serverSetup.current_audio_index > 0:
         serverSetup.current_audio_index -= 1
         serverSetup.p.stop()
-        play_current_audio(serverSetup.current_audio_index)
+        if mode == DOWNLOADED_MODE:
+            play_current_audio_downloaded(downloaded_songs_list[serverSetup.current_audio_index])
+        else:
+            play_current_audio(serverSetup.current_audio_index)
     elif serverSetup.current_audio_index == 0:
-        serverSetup.current_audio_index = len(serverSetup.object_keys) - 1
         serverSetup.p.stop()
-        play_current_audio(serverSetup.current_audio_index)
+        if mode == DOWNLOADED_MODE:
+            serverSetup.current_audio_index = len(downloaded_songs_list) - 1
+            print(serverSetup.current_audio_index)
+            play_current_audio_downloaded(downloaded_songs_list[serverSetup.current_audio_index])
+        else:
+            serverSetup.current_audio_index = len(serverSetup.object_keys) - 1
+            play_current_audio(serverSetup.current_audio_index)
 
 
 # Function to play the next audio
 def next_audio():
-    if serverSetup.current_audio_index < len(serverSetup.object_keys) - 1:
-        serverSetup.current_audio_index += 1
-        serverSetup.p.stop()
-        play_current_audio(serverSetup.current_audio_index)
-    elif serverSetup.current_audio_index == len(serverSetup.object_keys) -1:
-        serverSetup.current_audio_index = 0
-        serverSetup.p.stop()
-        play_current_audio(serverSetup.current_audio_index)
+    if mode == DOWNLOADED_MODE:
+        if serverSetup.current_audio_index < len(downloaded_songs_list) - 1:
+            serverSetup.current_audio_index += 1
+            serverSetup.p.stop()
+            play_current_audio_downloaded(downloaded_songs_list[serverSetup.current_audio_index])
+        elif serverSetup.current_audio_index == len(downloaded_songs_list) - 1:
+            serverSetup.current_audio_index = 0
+            serverSetup.p.stop()
+            play_current_audio_downloaded(downloaded_songs_list[serverSetup.current_audio_index])
+            
+    elif mode == CLOUD_MODE:
+        if serverSetup.current_audio_index < len(serverSetup.object_keys) - 1:
+            serverSetup.current_audio_index += 1
+            serverSetup.p.stop()
+            play_current_audio(serverSetup.current_audio_index)
+        elif serverSetup.current_audio_index == len(serverSetup.object_keys) -1:
+            serverSetup.current_audio_index = 0
+            serverSetup.p.stop()
+            play_current_audio(serverSetup.current_audio_index)
 
 
 
@@ -114,12 +167,35 @@ def display_folderName(filed_name):
     file_name = filed_name[:-1]
     #file_name = "Playlist: " + file_name
     str1 = file_name[:16]
-    lcd.lcdDisplay.lcd_display_string("Playlist: ", 1)
+    lcd.lcdDisplay.lcd_display_string("Cloud Playlist: ", 1)
     lcd.lcdDisplay.lcd_display_string(str1, 2)
     # str2 = file_name[16:]
     # if len(str2) > 0:
     #     lcd.long_string(lcd.lcdDisplay,str2,2)
 
+def display_download_folderName(filed_name):
+    lcd.lcdDisplay.lcd_clear()
+    #file_name = "Playlist: " + file_name
+    str1 = filed_name[:16]
+    lcd.lcdDisplay.lcd_display_string("DwnLded Plylist:", 1)
+    lcd.lcdDisplay.lcd_display_string(str1, 2)
+    # str2 = file_name[16:]
+    # if len(str2) > 0:
+    #     lcd.long_string(lcd.lcdDisplay,str2,2)
+
+def display_SongName_Download(song):
+    lcd.lcdDisplay.lcd_clear()
+    str_value = song[:-4]  # Adjust the string to remove the folder prefix
+    print(str_value)
+    str1 = str_value[:16]
+    lcd.lcdDisplay.lcd_display_string(str1, 1)
+    str2 = str_value[16:]
+    #lcd.swapBacklight()
+    if len(str2) > 0:
+        if full_name_flag == SET:
+            lcd.long_string(lcd.lcdDisplay,str2,2)
+        elif full_name_flag == NOT_SET:
+            lcd.lcdDisplay.lcd_display_string(str2,2)
 
 #display song name without the folder name in the beginning and without the ".mp3" in the end
 def display_SongName(file_name, folder_name):
