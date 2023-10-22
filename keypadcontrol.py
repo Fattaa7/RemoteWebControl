@@ -152,6 +152,7 @@ def pauseBtn(channel):
             print("clicked pause")
             if flag == MODE_MODE:
                 flag = AUDIO_MODE
+                audioFuncs.mode = audioFuncs.CLOUD_MODE
                 audioFuncs.audio_start(serverSetup.folder_keys[folder_index][:-1],folder_index)
             elif flag == AUDIO_MODE:
                 audioFuncs.pause_audio()
@@ -210,7 +211,6 @@ def DevMode():
         return
     for file in download_folders:
         print(file)
-    random.shuffle(download_folders)
     audioFuncs.display_download_folderName(download_folders[0])
 
 

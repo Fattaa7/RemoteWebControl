@@ -4,6 +4,7 @@ import os
 import threading
 from dotenv import load_dotenv
 import random
+import time
 # AWS S3 Configuration
 load_dotenv()
 aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
@@ -40,6 +41,7 @@ def getFolders():
         response = s3.list_objects_v2(Bucket=aws_s3_bucket)
         print("hellop")
         folder_keys = [obj['Key'] for obj in response.get('Contents', []) if obj['Size'] == 0]
+        time.sleep(0.4)
         print("this is " + str(len(folder_keys)))
     except Exception as e:
         folder_keys = []
