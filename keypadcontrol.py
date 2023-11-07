@@ -25,7 +25,7 @@ LCD_GPIO = 18
 
 TOGGLE_GPIO = 17
 
-flag = MODE_MODE
+flag = DEV_MODE
 
 
 folder_index = 0
@@ -39,7 +39,7 @@ def Toggle_swtich(channel):
         if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
             serverSetup.p.audio_set_volume(50)
         elif GPIO.input(TOGGLE_GPIO) == GPIO.HIGH:
-            serverSetup.p.audio_set_volume(100)
+            serverSetup.p.audio_set_volume(96)
 
 def nextBtn(channel):
     global button_pressed_time
@@ -233,12 +233,11 @@ GPIO.setup(LCD_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 
 
-IP = check_output(["hostname", "-I"], encoding="utf8").split()[0]
 
 
 Toggle_swtich(None)
 audioFuncs.init()
-mode_mode()
+DevMode()
 
 GPIO.add_event_detect(NEXT_GPIO, GPIO.FALLING, callback=nextBtn)
 GPIO.add_event_detect(PREVIOUS_GPIO, GPIO.FALLING, callback=prevBtn)

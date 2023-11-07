@@ -126,10 +126,10 @@ def pause_audio():
         print("Resumed")
 
 def forward():
-    serverSetup.p.set_position(serverSetup.p.get_position() + 0.03)
+    serverSetup.p.set_position(serverSetup.p.get_position() + 0.06)
 
 def backward():
-    serverSetup.p.set_position(serverSetup.p.get_position() - 0.03)
+    serverSetup.p.set_position(serverSetup.p.get_position() - 0.06)
 
 def autoNext():
     # place a flag here to check on the loop option
@@ -162,12 +162,14 @@ def display_SongName_Download(song):
     print(str_value)
     str1 = str_value[:16]
     lcd.lcdDisplay.lcd_display_string(str1, 1)
-    str2 = str_value[16:32]
     #lcd.swapBacklight()
+    str2 = str_value[16:]
     if len(str2) > 0:
         if full_name_flag == SET:
+            print("LONG STRING")
             lcd.long_string(lcd.lcdDisplay,str2,2)
         elif full_name_flag == NOT_SET:
+            str2 = str_value[16:32]
             lcd.lcdDisplay.lcd_display_string(str2,2)
 
 #display song name without the folder name in the beginning and without the ".mp3" in the end
@@ -177,10 +179,12 @@ def display_SongName(file_name, folder_name):
     print(str_value)
     str1 = str_value[:16]
     lcd.lcdDisplay.lcd_display_string(str1, 1)
-    str2 = str_value[16:32]
+    str2 = str_value[16:]
     if len(str2) > 0:
         if full_name_flag == SET:
+            print("LONG STRING")
             lcd.long_string(lcd.lcdDisplay,str2,2)
         elif full_name_flag == NOT_SET:
+            str2 = str_value[16:32]
             lcd.lcdDisplay.lcd_display_string(str2,2)
 
