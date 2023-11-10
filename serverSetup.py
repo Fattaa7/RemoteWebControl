@@ -23,12 +23,12 @@ current_audio_index = 0
 threads = [] # For downloading the playlist
 
 # Initialize S3 client
-s3 = None
+s3 =  s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
 
 def init():
     global object_keys
     global s3
-    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
     # List objects in the S3 bucket
     response = s3.list_objects_v2(Bucket=aws_s3_bucket, Prefix=f"{folder_selected}/")
     # Create a list to store object keys
