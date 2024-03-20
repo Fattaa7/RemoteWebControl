@@ -15,6 +15,13 @@ CREATED_MODE = 2
 class AudioFuncs:
     def __init__(self, lcd:LCD, setup:StorageSetup) -> None:
         
+        self.SET = 1
+        self.NOT_SET = 0
+        self.DOWNLOADED_MODE = 7
+        self.CLOUD_MODE = 0
+        self.CREATED_MODE = 2
+
+        
         self.storage = setup
         self.lcd = lcd
         self.path_dir = "/home/pi/Desktop/RemoteWebControl/downloads"
@@ -50,6 +57,7 @@ class AudioFuncs:
     def audio_start(self, select_folder, fldr_indx):
         self.folder_index = fldr_indx
         self.storage.folder_selected = select_folder
+        self.storage.initawy()
         self.play_current_audio(self.storage.current_audio_index)
         self.autoNext()
 
@@ -57,14 +65,14 @@ class AudioFuncs:
         self.downloaded_songs_list = os.listdir(rf"{self.path_dir}/{self.downloaded_folder_name}")
         for i in self.downloaded_songs_list:
             print(i)
-        self.play_current_audio_downloaded(self.downloaded_songs_list[0])
+        self.play_current_audio_downloaded(self.downloaded_songs_list[self.storage.current_audio_index])
         self.autoNext()
     
     def audio_start_created(self):
         self.downloaded_songs_list = os.listdir(rf"{self.path_dir_created}/{self.downloaded_folder_name}")
         for i in self.downloaded_songs_list:
             print(i)
-        self.play_current_audio_created(self.downloaded_songs_list[0])
+        self.play_current_audio_created(self.downloaded_songs_list[self.storage.current_audio_index])
         self.autoNext()
     
     def audio_stop(self):
@@ -126,7 +134,7 @@ class AudioFuncs:
 
     # Function to play the next audio
     def next_audio(self):
-        if self.self.mode == DOWNLOADED_MODE:
+        if self.mode == DOWNLOADED_MODE:
             if self.storage.current_audio_index < len(self.downloaded_songs_list) - 1:
                 self.storage.current_audio_index += 1
                 self.storage.p.stop()

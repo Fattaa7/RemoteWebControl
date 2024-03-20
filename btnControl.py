@@ -151,9 +151,9 @@ class Btn_Logic_Handler:
 
                 elif self.flag == CREATE_PLAYLIST_MODE:
                     if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
-                        current_character = playlistCreator.incrementAlphaSmall(current_character)
+                        self.current_character = playlistCreator.incrementAlphaSmall(self.current_character)
                     elif GPIO.input(TOGGLE_GPIO) == GPIO.HIGH:
-                        current_character = playlistCreator.incrementAlphaCapital(current_character)
+                        self.current_character = playlistCreator.incrementAlphaCapital(self.current_character)
                     self.createPlaylist_mode()
 
 
@@ -233,117 +233,122 @@ class Btn_Logic_Handler:
                         
                 elif self.flag == CREATE_PLAYLIST_MODE:
                     if GPIO.input(TOGGLE_GPIO) == GPIO.LOW:
-                        current_character = playlistCreator.decrementAlphaSmall(current_character)
+                        self.current_character = playlistCreator.decrementAlphaSmall(self.current_character)
                     elif GPIO.input(TOGGLE_GPIO) == GPIO.HIGH:
-                        current_character = playlistCreator.decrementAlphaCapital(current_character)
+                        self.current_character = playlistCreator.decrementAlphaCapital(self.current_character)
                     self.createPlaylist_mode()
 
 
 
     def pauseBtn(self, channel):
         if GPIO.input(channel) == GPIO.LOW:
-            if flag == AUDIO_MODE:
+            if self.flag == AUDIO_MODE:
                 if GPIO.input(LCD_GPIO) == GPIO.LOW:
                     self.StorageSetup.downloadPlaylist()
                     
-            elif flag == DOWNLOADED_AUDIO_MODE:
+            elif self.flag == DOWNLOADED_AUDIO_MODE:
                 if GPIO.input(LCD_GPIO) == GPIO.LOW:
                     os.system(f"rm -r downloads/{self.download_folders[self.folder_index]}")
                     print(f"Deleted {self.download_folders[self.folder_index]}")
-                    flag = DEV_MODE
+                    self.flag = DEV_MODE
                     self.DevMode()
                     
-            elif flag == CREATED_AUDIO_MODE:
+            elif self.flag == CREATED_AUDIO_MODE:
                 if GPIO.input(LCD_GPIO) == GPIO.LOW:
-                    current_song = self.AudioFuncs.downloaded_songs_list[self.StorageSetup.current_audio_index]
-                    current_folder = self.download_folders[self.folder_index]
-                    os.system(f"rm -r created/{shlex.quote(current_folder)}/{shlex.quote(current_song)}")
-                    print(f"rm -r created/{shlex.quote(current_folder)}/{shlex.quote(current_song)}")
-                    flag = CREATED_MODE
+                    self.current_song = self.AudioFuncs.downloaded_songs_list[self.StorageSetup.current_audio_index]
+                    self.current_folder = self.download_folders[self.folder_index]
+                    os.system(f"rm -r created/{shlex.quote(self.current_folder)}/{shlex.quote(self.current_song)}")
+                    print(f"rm -r created/{shlex.quote(self.current_folder)}/{shlex.quote(self.current_song)}")
+                    self.flag = CREATED_MODE
                     self.created_mode()
 
             time.sleep(0.1)
             if GPIO.input(channel) == GPIO.LOW:
                 print("clicked pause")
-                if flag == MODE_MODE:
-                    flag = AUDIO_MODE
+                if self.flag == MODE_MODE:
+                    self.flag = AUDIO_MODE
                     self.AudioFuncs.mode = self.AudioFuncs.CLOUD_MODE
                     self.AudioFuncs.audio_start(self.StorageSetup.folder_keys[self.folder_index][:-1],self.folder_index)
                     
-                elif flag == AUDIO_MODE:
+                elif self.flag == AUDIO_MODE:
                     self.AudioFuncs.pause_audio()
                     
-                elif flag == DOWNLOADED_AUDIO_MODE:
+                elif self.flag == DOWNLOADED_AUDIO_MODE:
                     self.button_pressed_time = time.time()
                     while GPIO.input(channel) == GPIO.LOW and time.time() - self.button_pressed_time <= 0.6:
                         pass  # Wait until the button is released or 0.5 seconds has passed
                     if time.time() - self.button_pressed_time > 0.6:
-                        current_song = self.AudioFuncs.downloaded_songs_list[self.StorageSetup.current_audio_index]
-                        current_folder = self.download_folders[self.folder_index]
-                        flag = TO_COPY_TO_MODE  # Execute the function if pressed for 0.5 seconds or more
+                        self.current_song = self.AudioFuncs.downloaded_songs_list[self.StorageSetup.current_audio_index]
+                        self.current_folder = self.download_folders[self.folder_index]
+                        self.flag = TO_COPY_TO_MODE  # Execute the function if pressed for 0.5 seconds or more
                         self.lcd.lcdDisplay.lcd_clear()
                         self.created_mode()
                     else:
                         self.AudioFuncs.pause_audio()
 
-                elif flag == TO_COPY_TO_MODE:
+                elif self.flag == TO_COPY_TO_MODE:
                     cmd = (
-                        f"cp downloads/{shlex.quote(current_folder)}/{shlex.quote(current_song)} "
+                        f"cp downloads/{shlex.quote(self.current_folder)}/{shlex.quote(self.current_song)} "
                         f"created/{self.download_folders[self.folder_index]}")
                     print(cmd)
                     os.system(cmd)
-                    flag = DEV_MODE
+                    self.flag = DEV_MODE
                     self.DevMode()
                     
-                elif flag == CREATED_AUDIO_MODE:
+                elif self.flag == CREATED_AUDIO_MODE:
                     self.AudioFuncs.pause_audio()
 
                 
-                elif flag == DEV_MODE:
+                elif self.flag == DEV_MODE:
                     self.button_pressed_time = time.time()  # Record the start time of the button press
                     
                     
-                    flag = DOWNLOADED_AUDIO_MODE
+                    self.flag = DOWNLOADED_AUDIO_MODE
                     self.AudioFuncs.mode = self.AudioFuncs.DOWNLOADED_MODE
                     self.AudioFuncs.downloaded_folder_name = self.download_folders[self.folder_index]
                     self.AudioFuncs.audio_start_downloaded()
                 
-                elif flag == CREATED_MODE:
+                elif self.flag == CREATED_MODE:
                     self.button_pressed_time = time.time()  # Record the start time of the button press
                     if GPIO.input(LCD_GPIO) == GPIO.LOW:
 
-                        current_folder = self.download_folders[self.folder_index]
-                        os.system(f"rm -r created/{shlex.quote(current_folder)}")
-                        print(f"rm -r created/{shlex.quote(current_folder)}/")
-                        flag = CREATED_MODE
+                        self.current_folder = self.download_folders[self.folder_index]
+                        os.system(f"rm -r created/{shlex.quote(self.current_folder)}")
+                        print(f"rm -r created/{shlex.quote(self.current_folder)}/")
+                        self.flag = CREATED_MODE
                         self.created_mode()
 
                     else:
 
-                        flag = CREATED_AUDIO_MODE
+                        self.flag = CREATED_AUDIO_MODE
                         self.AudioFuncs.mode = self.AudioFuncs.CREATED_MODE
                         self.AudioFuncs.downloaded_folder_name = self.download_folders[self.folder_index]
-                        self.AudioFuncs.audio_start_created()
+                        try:
+                            self.AudioFuncs.audio_start_created()
+                        except:
+                            self.StorageSetup.current_audio_index = 0
+                            self.AudioFuncs.audio_start_created()
+
 
                 
-                elif flag == CREATE_PLAYLIST_MODE:
-                    if current_character == '':
-                        if playlist_name_create == "":
-                            flag = DEV_MODE
+                elif self.flag == CREATE_PLAYLIST_MODE:
+                    if self.current_character == '':
+                        if self.playlist_name_create == "":
+                            self.flag = DEV_MODE
                             self.DevMode()
                             return
-                        dir = rf"/home/pi/Desktop/RemoteWebControl/created/{playlist_name_create}"
+                        dir = rf"/home/pi/Desktop/RemoteWebControl/created/{self.playlist_name_create}"
                         isExist = os.path.exists(dir)
                         if isExist:
                             print("folder exists")
                         else:
                             os.mkdir(dir)
-                        playlist_name_create = ""
-                        flag = DEV_MODE
+                        self.playlist_name_create = ""
+                        self.flag = DEV_MODE
                         self.DevMode()
                     else:
-                        playlist_name_create = playlist_name_create + current_character
-                        current_character = ''
+                        self.playlist_name_create = self.playlist_name_create + self.current_character
+                        self.current_character = ''
                         self.createPlaylist_mode()
 
     def exitBtn(self, channel):
@@ -352,51 +357,51 @@ class Btn_Logic_Handler:
             if GPIO.input(channel) == GPIO.LOW:
                 print("clicked exit")       
 
-                if flag == MODE_MODE:
-                    flag = CREATED_MODE
+                if self.flag == MODE_MODE:
+                    self.flag = CREATED_MODE
                     self.created_mode()
                     
-                elif flag == DEV_MODE:
+                elif self.flag == DEV_MODE:
                     self.button_pressed_time = time.time()
                     while GPIO.input(channel) == GPIO.LOW and time.time() - self.button_pressed_time <= 0.8:
                         pass  # Wait until the button is released or 0.5 seconds has passed
                     if time.time() - self.button_pressed_time > 0.8:
-                        flag = CREATE_PLAYLIST_MODE  # Execute the function if pressed for 0.5 seconds or more
+                        self.flag = CREATE_PLAYLIST_MODE  # Execute the function if pressed for 0.5 seconds or more
                         self.lcd.lcdDisplay.lcd_clear()
                         self.createPlaylist_mode()
                     else:
-                        flag = MODE_MODE
+                        self.flag = MODE_MODE
                         self.mode_mode()
                         # Execute the function if pressed less than 0.5 seconds
                         
-                elif flag == CREATED_MODE:
+                elif self.flag == CREATED_MODE:
                     self.button_pressed_time = time.time()
                     while GPIO.input(channel) == GPIO.LOW and time.time() - self.button_pressed_time <= 0.8:
                         pass  # Wait until the button is released or 0.5 seconds has passed
                     if time.time() - self.button_pressed_time > 0.8:
-                        flag = CREATE_PLAYLIST_MODE  # Execute the function if pressed for 0.5 seconds or more
+                        self.flag = CREATE_PLAYLIST_MODE  # Execute the function if pressed for 0.5 seconds or more
                         self.lcd.lcdDisplay.lcd_clear()
                         self.createPlaylist_mode()
                     else:
-                        flag = DEV_MODE
+                        self.flag = DEV_MODE
                         self.DevMode()
                         # Execute the function if pressed less than 0.5 seconds
 
-                elif flag == CREATE_PLAYLIST_MODE:
+                elif self.flag == CREATE_PLAYLIST_MODE:
                     self.lcd.lcdDisplay.lcd_clear()
-                    playlist_name_create = ""
-                    flag = DEV_MODE
+                    self.playlist_name_create = ""
+                    self.flag = DEV_MODE
                     self.DevMode()
 
-                elif flag == CREATED_AUDIO_MODE:
-                    flag = CREATED_MODE
+                elif self.flag == CREATED_AUDIO_MODE:
+                    self.flag = CREATED_MODE
                     self.created_mode()
 
-                elif flag == AUDIO_MODE:
-                    flag = MODE_MODE
+                elif self.flag == AUDIO_MODE:
+                    self.flag = MODE_MODE
                     self.mode_mode()
-                elif flag == DOWNLOADED_AUDIO_MODE:
-                    flag = DEV_MODE
+                elif self.flag == DOWNLOADED_AUDIO_MODE:
+                    self.flag = DEV_MODE
                     self.DevMode()            
 
     def lcdBtn(self,channel):
@@ -419,7 +424,8 @@ class Btn_Logic_Handler:
             return
         for file in self.download_folders:
             print(file)
-        self.AudioFuncs.display_download_folderName(self.download_folders[0])
+            
+        self.AudioFuncs.display_download_folderName(self.download_folders[self.folder_index])
 
 
     def mode_mode(self):

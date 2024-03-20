@@ -21,6 +21,8 @@ class StorageSetup:
         self.vlc_instance = vlc.Instance()
         self.current_audio_index = 0
         self.threads = []
+        
+    def initawy(self):
         self.s3 = boto3.client('s3', aws_access_key_id= self.aws_access_key_id, aws_secret_access_key= self.aws_secret_access_key)
         self.response = self.s3.list_objects_v2(Bucket=self.aws_s3_bucket, Prefix=f"{self.folder_selected}/")
         # Create a list to store object keys

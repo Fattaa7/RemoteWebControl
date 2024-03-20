@@ -24,21 +24,16 @@ TO_COPY_TO_MODE = 44
 
 class Main:
     def __init__(self):
-        
         lcd = LCD()
         dataBase = StorageSetup()
         audioFuncs = AudioFuncs(lcd, dataBase)
-        
-        
-        
         btnHandler = Btn_Logic_Handler(audioFuncs, dataBase, lcd)
-        
         btnHandler.DevMode()
-        
+
         while True:
             if btnHandler.flag != CREATE_PLAYLIST_MODE:
                 btnHandler.Toggle_swtich(None)
             time.sleep(2)
 
-
-        
+if __name__ == "__main__":
+    main_instance = Main()
