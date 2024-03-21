@@ -42,6 +42,8 @@ class StorageSetup:
             self.folder_keys = []
             print("Network Error!")
 
+
+
     def download_file_s3(self, bucket, key, filename):
         self.s3.download_file(bucket, key, filename)
         print(f"Downloaded {filename} from the S3 bucket.")

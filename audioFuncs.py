@@ -43,17 +43,6 @@ class AudioFuncs:
     def setFullNameFlag(self, value):
         self.full_name_flag = value
 
-    def modeInit(self):
-        self.lcd.lcdDisplay.lcd_clear()
-        self.storage.current_audio_index = 0
-        self.storage.getFolders()
-        if len(self.storage.folder_keys) == 0:
-            self.lcd.lcdDisplay.lcd_display_string("Cloud Error!",1)
-            self.lcd.lcdDisplay.lcd_display_string("Try Dwnlds",2)
-        else:
-            self.display_folderName(self.storage.folder_keys[0])
-    
-
     def audio_start(self, select_folder, fldr_indx):
         self.folder_index = fldr_indx
         self.storage.folder_selected = select_folder
