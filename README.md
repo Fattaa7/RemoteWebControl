@@ -167,6 +167,7 @@ git clone https://github.com/Fattaa7/MiniWhatsApp.git
    ```
 - Login to WhatsApp with QR code using your phone.
 - Use the same method for the Google Sheet API in RetroMan. No need to get a new key.
+- Keep MiniWhatsApp running on a machine as it acts as a server.
 - Enjoy your new device. 🗿
    
   
