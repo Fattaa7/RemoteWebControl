@@ -111,6 +111,7 @@ To ensure the RetroMan player runs at boot on Raspbian Lite, follow these steps:
     User=pi
     Environment="XDG_RUNTIME_DIR=/run/user/1000"
     Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse/"
+    Environment="CREDS_JSON_PATH=/home/pi/Desktop/web/RetroMan/creds.json"
 
     [Install]
     WantedBy=multi-user.target

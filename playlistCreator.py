@@ -39,3 +39,25 @@ def decrementAlphaCapital(x):
         x = ord(x) - 1
     return chr(x)
 
+
+
+
+def incrementNumerical(x):
+    if x == '':
+        return '0'
+    if x == '9':
+        x = ord('0')
+    else:
+        x = ord(x) + 1
+    return chr(x)
+
+
+def decrementNumerical(x):
+    if x == '':
+        return '0'
+    if x == '0':
+        x = ord('9')
+    else:
+        x = ord(x) - 1
+    return chr(x)
+

@@ -49,19 +49,16 @@ class AudioFuncs:
         self.storage.initawy()
         self.play_current_audio(self.storage.current_audio_index)
         self.autoNext()
-
-    def audio_start_downloaded(self):
-        self.downloaded_songs_list = os.listdir(rf"{self.path_dir}/{self.downloaded_folder_name}")
-        for i in self.downloaded_songs_list:
-            print(i)
-        self.play_current_audio_downloaded(self.downloaded_songs_list[self.storage.current_audio_index])
-        self.autoNext()
     
-    def audio_start_created(self):
-        self.downloaded_songs_list = os.listdir(rf"{self.path_dir_created}/{self.downloaded_folder_name}")
+    def audio_start_playlist(self, mode = "Downloaded"):
+        if mode == "Downloaded":
+            self.downloaded_songs_list = os.listdir(rf"{self.path_dir}/{self.downloaded_folder_name}")
+            self.play_current_audio_downloaded(self.downloaded_songs_list[self.storage.current_audio_index])
+        elif mode == "Created":
+            self.downloaded_songs_list = os.listdir(rf"{self.path_dir_created}/{self.downloaded_folder_name}")
+            self.play_current_audio_created(self.downloaded_songs_list[self.storage.current_audio_index])
         for i in self.downloaded_songs_list:
             print(i)
-        self.play_current_audio_created(self.downloaded_songs_list[self.storage.current_audio_index])
         self.autoNext()
     
     def audio_stop(self):

@@ -5,6 +5,7 @@ from datetime import datetime
 from btnControl import Btn_Logic_Handler
 from subprocess import check_output
 from serverSetup import StorageSetup
+from whatsUI import UI
 import time
 import os
 import random
@@ -20,6 +21,7 @@ CREATE_PLAYLIST_MODE = 54
 CREATED_MODE = 99
 CREATED_AUDIO_MODE = 77
 TO_COPY_TO_MODE = 44
+CREATE_MESSAGE_MODE = 3
 
 
 class Main:
@@ -31,7 +33,7 @@ class Main:
         btnHandler.DevMode()
 
         while True:
-            if btnHandler.flag != CREATE_PLAYLIST_MODE:
+            if btnHandler.flag != CREATE_PLAYLIST_MODE and btnHandler.flag != CREATE_MESSAGE_MODE:
                 btnHandler.Toggle_swtich(None)
             time.sleep(2)
 
