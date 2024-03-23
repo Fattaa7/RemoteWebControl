@@ -1,10 +1,15 @@
-# RetroMan - Raspberry Pi Music Player
-
+# RetroMan - Raspberry Pi Music Player 
+## **RetroMan is now a WhatsApp Remote as well!!!**
+#
 ![RetroMan](https://github.com/Fattaa7/RetroMan/assets/49599287/5813d0aa-bf6d-43d8-9bc1-8d0c2a80a25a)
 
 
 RetroMan is a music streaming and playback system using Raspbian Lite. This Python project allows you to stream music from an AWS S3 bucket and play songs and playlists on a 1602 I2C LCD display. You can easily browse and select songs or playlists from the cloud, or download them for offline playback. The system is designed for both immediate playback and future listening sessions.
 - **WARNING: You use your own AWS S3 bucket!**
+
+RetroMan brings even more features today, introducing the **WhatsApp Remote** 
+Since WhatsApp doesn't have its own API, RetroMan finds a way around by using a host server as the channel to access your everyday WhatsApp.
+By communicating with the host uisng Google Sheet, RetroMan overcomes such difficulties. - **further explained later** - 
 
 ## Features
 
@@ -14,6 +19,8 @@ RetroMan is a music streaming and playback system using Raspbian Lite. This Pyth
 - Easily switch between cloud and downloaded playlists.
 - Control playback, volume, and LCD display with the hardware components.
 - Can be used with any device with 3.5mm audio jack.
+- Create and moodify your on playlists with RetroMan.
+- Quickly access your WhatsApp recent messages and reply through typing!!! **demonstarted further down**
 
 ## Demonstration Video
 
@@ -125,4 +132,42 @@ To ensure the RetroMan player runs at boot on Raspbian Lite, follow these steps:
     sudo systemctl enable player.service
     ```
 
+
+
+
+## WhatsApp Remote
+
+To use WhatsApp Remote you need to:
+- Clone **MiniWhatsApp** first:
+https://github.com/Fattaa7/MiniWhatsApp
+```bash
+git clone https://github.com/Fattaa7/MiniWhatsApp.git
+```
+- Make your own Google Sheet that you can access using **gspread**.
+- Install required libraries.
+- Create your own **creds.json** file that has your keys and required data for the API and put it in the project directory. It will look something like this:
+```json
+{
+    "type": "service_account",
+    "project_id": "ID",
+    "private_key_id": "KEYYYYYYY",
+    "private_key": "-----BEGIN PRIVATE KEY-----DATAAAAAAAAA-----END PRIVATE KEY-----\n",
+    "client_email": "MAIL",
+    "client_id": "ID",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "DATAA",
+    "universe_domain": "googleapis.com"
+  }
+  ```
+- Run MiniWhatsApp:
+   ```bash
+  python main.py
+   ```
+- Login to WhatsApp with QR code using your phone.
+- Use the same method for the Google Sheet API in RetroMan. No need to get a new key.
+- Enjoy your new device. 🗿
+   
+  
 
