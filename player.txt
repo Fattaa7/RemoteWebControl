@@ -12,7 +12,7 @@ SyslogIdentifier=player
 User=pi
 Environment="XDG_RUNTIME_DIR=/run/user/1000"
 Environment="PULSE_RUNTIME_PATH=/run/user/1000/pulse/"
-
+Environment="CREDS_JSON_PATH=/home/pi/Desktop/RemoteWebControl/creds.json"
 
 [Install]
 WantedBy=multi-user.target
